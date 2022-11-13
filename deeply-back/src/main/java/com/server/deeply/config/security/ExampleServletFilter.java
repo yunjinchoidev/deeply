@@ -24,7 +24,7 @@ public class ExampleServletFilter extends HttpFilter {
 
 			if (token != null && !token.equalsIgnoreCase("null")) {
 				// userId 가져오기. 위조 된 경우 예외 처리 된다.
-				String userId = tokenProvider.validateAndGetUserId(token);
+				boolean b = tokenProvider.validateToken(token);
 
 				// 다음 ServletFilter 실행
 				filterChain.doFilter(request, response);
