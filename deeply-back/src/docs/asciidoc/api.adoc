@@ -1,0 +1,27 @@
+= Deeply 노년 연애 플랫폼 REST API Guide
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+:operation-curl-request-title: Example request
+:operation-http-response-title: Example response
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+[[resources-user]]
+== 1. 회원
+
+[[resources-user-create]]
+=== 1.1 회원 가입
+include::{snippets}/post_auth_singup/curl-request.adoc[]
+include::{snippets}/post_auth_singup/request-fields.adoc[]
+include::{snippets}/post_auth_singup/response-fields.adoc[]
+
+[[resources-user-create]]
+=== 1.2 로그인
+include::{snippets}/post_auth_singup/curl-request.adoc[]
+include::{snippets}/post_auth_singup/request-fields.adoc[]
+include::{snippets}/post_auth_singup/response-fields.adoc[]
