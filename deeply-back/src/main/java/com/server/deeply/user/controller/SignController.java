@@ -69,13 +69,14 @@ public class SignController {
     }
 
 
-       @PostMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<?> logout(@Validated UserRequestDto logout, Errors errors) {
         // validation check
         if (errors.hasErrors()) {
             return response.invalidFields(Helper.refineErrors(errors));
         }
-        return userService.logout(logout);
+        ResponseEntity<?> result = userService.logout(logout);
+        return result;
     }
 
 

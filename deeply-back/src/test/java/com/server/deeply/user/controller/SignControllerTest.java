@@ -1,6 +1,7 @@
 package com.server.deeply.user.controller;
 
 import com.google.gson.Gson;
+import com.server.deeply.common.Response;
 import com.server.deeply.common.enums.ENUM_ROLE;
 import com.server.deeply.config.security.TokenProvider;
 import com.server.deeply.user.dto.UserRequestDto;
@@ -16,7 +17,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -138,6 +141,37 @@ class SignControllerTest {
                                 fieldWithPath("role").description("권한"),
                                 fieldWithPath("accessToken").description("액세스 토큰"),
                                 fieldWithPath("refreshToken").description("리프레시 토큰")
+                        ))
+                );
+    }
+
+    @Test
+    void logout() throws Exception {
+        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5dW5qaW4yMUBobWFpbC5jb20iLCJpc3MiOiJkZW1vIGFwcCIsImlhdCI6MTY2ODMwOTE0MiwiZXhwIjoxNjY4Mzk1NTQyfQ.d8CsN8YXJNOJOkVfTiOAbB6NsKsuUo8Oo__YUkGqSiM2RRdVQo_tcIhpw44sqyNzwoJdJsgfENymCLC5n_p6dw";
+        String refreshToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5dW5qaW4yMUBobWFpbC5jb20iLCJpc3MiOiJkZW1vIGFwcCIsImlhdCI6MTY2ODMwOTE0MiwiZXhwIjoxNjY4Mzk1NTQyfQ.d8CsN8YXJNOJOkVfTiOAbB6NsKsuUo8Oo__YUkGqSiM2RRdVQo_tcIhpw44sqyNzwoJdJsgfENymCLC5n_p6dw";
+
+        Response response = new Response();
+        ResponseEntity<?> result = response.success("로그아웃");
+
+        doReturn(result).when(userService).logout(any());
+
+        UserRequestDto userRequestDto = new UserRequestDto();
+        userRequestDto.setAccessToken(accessToken);
+        userRequestDto.setRefreshToken(refreshToken);
+
+        this.mockMvc.perform(post("/auth/logout")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(userRequestDto)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("post_auth_logout",
+                        preprocessRequest(prettyPrint()),   // (2)
+                        preprocessResponse(prettyPrint()),  // (3)
+                        requestFields(                        // (4)
+                                fieldWithPath("accessToken").description("액세스 토큰"),
+                                fieldWithPath("refreshToken").description("리프레시 토큰")
+                        ),
+                        relaxedResponseFields(
                         ))
                 );
     }

@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserDetailsService{
+public class UserServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -46,11 +46,11 @@ public class UserServiceImpl implements UserDetailsService{
     private final RedisTemplate redisTemplate;
 
 
-
-       /**
+    /**
      * Spring-Security의 유저 인증 처리 과정중 유저객체를 만드는 과정
      * !! 보통 구글링시 UserDetails 클래스를 따로 만들어서 사용하지만 UserDetails 인터페이스를 구현한
      * User 라는 클래스를 시큐리티가 제공해줘서 굳이 만들어주지 않음
+     *
      * @param username userId
      * @return UserDetails (security에서 사용하는 유저 정보를 가진 객체)
      * @throws UsernameNotFoundException userId로 유저를 찾지 못했을 경우 발생하는 에러
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserDetailsService{
         User user = userRepository.findUserByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("userId : " + username + " was not found"));
 
-         return User.builder()
+        return User.builder()
                 .username(user.getEmail())
                 .password(passwordEncoder.encode(user.getPassword()))
                 .role("USER")
@@ -92,14 +92,14 @@ public class UserServiceImpl implements UserDetailsService{
         return user;
     }
 
-    public Page<User> findAll(UserRequestDto param){
+    public Page<User> findAll(UserRequestDto param) {
 
         Sort sort = Sort.by(param.getOrderBy()).ascending();
         Pageable pageable = PageRequest.of(param.getPage(), param.getPageSize(), sort);
         return userRepository.findAll(pageable);
     }
 
-    public UserResponseDto updateUser(UserRequestDto param){
+    public UserResponseDto updateUser(UserRequestDto param) {
         User user = UserMapper.INSTANCE.toEntity(param);
         User updateUser = userRepository.save(user);
         UserResponseDto userResponseDto = UserMapper.INSTANCE.toDto(updateUser);
@@ -128,9 +128,8 @@ public class UserServiceImpl implements UserDetailsService{
 
         // 기존 토큰이 있으면 수정, 없으면 생성
 //        refreshRedisRepository.save(token);
-       redisTemplate.opsForValue()
+        redisTemplate.opsForValue()
                 .set("RT:" + authentication.getName(), refreshToken, 604800, TimeUnit.MILLISECONDS);
-
 
 
         // accessToken과 refreshToken 리턴
@@ -145,7 +144,12 @@ public class UserServiceImpl implements UserDetailsService{
                 .build();
         return responseUserDTO;
     }
-        public ResponseEntity<?> logout(UserRequestDto logout) {
+
+
+
+
+
+    public ResponseEntity<?> logout(UserRequestDto logout) {
         // 1. Access Token 검증
         if (!tokenProvider.validateToken(logout.getAccessToken())) {
             return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
@@ -154,7 +158,7 @@ public class UserServiceImpl implements UserDetailsService{
         // 2. Access Token 에서 User email 을 가져옵니다.
         Authentication authentication = tokenProvider.getAuthentication(logout.getAccessToken());
 
-     // 3. Redis 에서 해당 User email 로 저장된 Refresh Token 이 있는지 여부를 확인 후 있을 경우 삭제합니다.
+        // 3. Redis 에서 해당 User email 로 저장된 Refresh Token 이 있는지 여부를 확인 후 있을 경우 삭제합니다.
         if (redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {
             // Refresh Token 삭제
             redisTemplate.delete("RT:" + authentication.getName());
@@ -166,11 +170,6 @@ public class UserServiceImpl implements UserDetailsService{
 
         return response.success("로그아웃 되었습니다.");
     }
-
-
-
-
-
 
 
 }
