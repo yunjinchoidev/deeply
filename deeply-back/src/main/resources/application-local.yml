@@ -25,10 +25,6 @@ spring:
         default_batch_fetch_size: 1000 #최적화 옵션
     open-in-view: true
 
-  devtools:
-    livereload:
-      enabled: true
-
   mvc:
     path match:
       matching-strategy: ant_path_matcher
@@ -41,3 +37,9 @@ logging:
   level:
     org.hibernate.sql: debug
     org.hibernate.type: trace
+
+jwt:
+  header: Authorization
+  secret: dfasdfas
+  access-token-validity-in-seconds: 1800 # 초 단위
+  refresh-token-validity-in-seconds: 604800

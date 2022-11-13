@@ -20,6 +20,9 @@ public class UserRequestDto {
     private String username;
     private String role;
 
+    private String accessToken;
+    private String refreshToken;
+
     private Integer page;
     private Integer pageSize;
     private String  orderBy;

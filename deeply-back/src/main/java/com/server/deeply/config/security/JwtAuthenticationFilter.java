@@ -4,6 +4,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -11,6 +12,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -26,6 +28,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
+    private final RedisTemplate redisTemplate;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -35,20 +38,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.info("Filter is running...");
             // 토큰 검사하기. JWT이므로 인가 서버에 요청 하지 않고도 검증 가능.
             if (token != null && !token.equalsIgnoreCase("null")) {
-                // userId 가져오기. 위조 된 경우 예외 처리 된다.
-                boolean b = tokenProvider.validateToken(token);
+                String isLogout = (String) redisTemplate.opsForValue().get(token);
+                if (ObjectUtils.isEmpty(isLogout)) {
+                    // userId 가져오기. 위조 된 경우 예외 처리 된다.
+                    boolean b = tokenProvider.validateToken(token);
 //                String userId = b;
-                log.info("Authenticated user ID : " + b);
-                // 인증 완료; SecurityContextHolder에 등록해야 인증된 사용자라고 생각한다.
-                AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        b, // 인증된 사용자의 정보. 문자열이 아니어도 아무거나 넣을 수 있다.
-                        null, //
-                        AuthorityUtils.NO_AUTHORITIES
-                );
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-                securityContext.setAuthentication(authentication);
-                SecurityContextHolder.setContext(securityContext);
+                    log.info("Authenticated user ID : " + b);
+                    // 인증 완료; SecurityContextHolder에 등록해야 인증된 사용자라고 생각한다.
+                    AbstractAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            b, // 인증된 사용자의 정보. 문자열이 아니어도 아무거나 넣을 수 있다.
+                            null, //
+                            AuthorityUtils.NO_AUTHORITIES
+                    );
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+                    securityContext.setAuthentication(authentication);
+                    SecurityContextHolder.setContext(securityContext);
+                }else{
+                    throw new IllegalStateException("이미 로그아웃된 계정입니다.");
+                }
             }
         } catch (ExpiredJwtException e) {
             request.setAttribute("exception", e);

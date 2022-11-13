@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,7 +25,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user")
-public class User extends BaseEntity implements UserDetails {
+public class User extends BaseEntity implements UserDetails, CredentialsContainer {
 
     @Id
     @GeneratedValue
@@ -35,6 +36,8 @@ public class User extends BaseEntity implements UserDetails {
     private String password; // 비밀번호
     private String role; // 권한
     private String username; // 이름
+
+
 
     public List<String> getRoleList() {
         if (role.length() > 0) {
@@ -73,6 +76,11 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    @Override
+    public void eraseCredentials() {
+
     }
 }
 

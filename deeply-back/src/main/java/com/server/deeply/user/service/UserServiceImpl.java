@@ -1,5 +1,6 @@
 package com.server.deeply.user.service;
 
+import com.server.deeply.common.Response;
 import com.server.deeply.config.redis.RefreshRedisRepository;
 import com.server.deeply.config.redis.RefreshRedisToken;
 import com.server.deeply.config.security.TokenProvider;
@@ -14,6 +15,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +42,8 @@ public class UserServiceImpl implements UserDetailsService{
     private final PasswordEncoder passwordEncoder;
     private final RefreshRedisRepository refreshRedisRepository;
     private final TokenProvider tokenProvider;
+    private final Response response;
+    private final RedisTemplate redisTemplate;
 
 
 
@@ -54,7 +61,7 @@ public class UserServiceImpl implements UserDetailsService{
                 .orElseThrow(() -> new UsernameNotFoundException("userId : " + username + " was not found"));
 
          return User.builder()
-                .username(user.getUsername())
+                .username(user.getEmail())
                 .password(passwordEncoder.encode(user.getPassword()))
                 .role("USER")
                 .build();
@@ -117,10 +124,13 @@ public class UserServiceImpl implements UserDetailsService{
 
         // refresh token 발급 및 저장
         String refreshToken = tokenProvider.createRefreshToken(authentication);
-        RefreshRedisToken token = RefreshRedisToken.createToken(email, refreshToken);
+//        RefreshRedisToken token = RefreshRedisToken.createToken(email, refreshToken);
 
         // 기존 토큰이 있으면 수정, 없으면 생성
-        refreshRedisRepository.save(token);
+//        refreshRedisRepository.save(token);
+       redisTemplate.opsForValue()
+                .set("RT:" + authentication.getName(), refreshToken, 604800, TimeUnit.MILLISECONDS);
+
 
 
         // accessToken과 refreshToken 리턴
@@ -135,7 +145,27 @@ public class UserServiceImpl implements UserDetailsService{
                 .build();
         return responseUserDTO;
     }
+        public ResponseEntity<?> logout(UserRequestDto logout) {
+        // 1. Access Token 검증
+        if (!tokenProvider.validateToken(logout.getAccessToken())) {
+            return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
+        }
 
+        // 2. Access Token 에서 User email 을 가져옵니다.
+        Authentication authentication = tokenProvider.getAuthentication(logout.getAccessToken());
+
+     // 3. Redis 에서 해당 User email 로 저장된 Refresh Token 이 있는지 여부를 확인 후 있을 경우 삭제합니다.
+        if (redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {
+            // Refresh Token 삭제
+            redisTemplate.delete("RT:" + authentication.getName());
+        }
+        // 4. 해당 Access Token 유효시간 가지고 와서 BlackList 로 저장하기
+        Long expiration = tokenProvider.getExpiration(logout.getAccessToken());
+        redisTemplate.opsForValue()
+                .set(logout.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+
+        return response.success("로그아웃 되었습니다.");
+    }
 
 
 
