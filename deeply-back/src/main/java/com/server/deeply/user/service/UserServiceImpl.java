@@ -10,6 +10,10 @@ import com.server.deeply.user.mapper.UserMapper;
 import com.server.deeply.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -81,6 +85,20 @@ public class UserServiceImpl implements UserDetailsService{
         return user;
     }
 
+    public Page<User> findAll(UserRequestDto param){
+
+        Sort sort = Sort.by(param.getOrderBy()).ascending();
+        Pageable pageable = PageRequest.of(param.getPage(), param.getPageSize(), sort);
+        return userRepository.findAll(pageable);
+    }
+
+    public UserResponseDto updateUser(UserRequestDto param){
+        User user = UserMapper.INSTANCE.toEntity(param);
+        User updateUser = userRepository.save(user);
+        UserResponseDto userResponseDto = UserMapper.INSTANCE.toDto(updateUser);
+        return userResponseDto;
+    }
+
     public UserResponseDto getByCredentials(final String email,
                                             final String password,
                                             final PasswordEncoder encoder) {
@@ -112,8 +130,8 @@ public class UserServiceImpl implements UserDetailsService{
                 .password(password)
                 .username(originalUser.getUsername())
                 .role(originalUser.getRole())
-                .accessToken("Bearer-" + tokenProvider.create(originalUser))
-                .refreshToken("Bearer-" + refreshToken)
+                .accessToken(tokenProvider.createAccessToken(authentication))
+                .refreshToken(refreshToken)
                 .build();
         return responseUserDTO;
     }

@@ -2,6 +2,7 @@ package com.server.deeply.user.dto;
 
 import lombok.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDateTime;
 
 @Builder
@@ -18,6 +19,11 @@ public class UserRequestDto {
 
     private String username;
     private String role;
+
+    private Integer page;
+    private Integer pageSize;
+    private String  orderBy;
+
 
     @Builder.Default
     private Integer createId = null; // 생성자 ID
