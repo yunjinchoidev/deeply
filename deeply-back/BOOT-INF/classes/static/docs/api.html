@@ -467,7 +467,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     -H 'Content-Type: application/json;charset=UTF-8' \
     -d '{
   "email" : "cyj@gmail.com",
-  "password" : "1111"
+  "password" : "1111",
+  "username" : "최윤진",
+  "role" : "ROLE_USER"
 }'</code></pre>
 </div>
 </div>
@@ -495,8 +497,36 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">비밀번호</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>username</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>role</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">권한</p></td>
+</tr>
 </tbody>
 </table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
+  "id" : 1,
+  "email" : null,
+  "password" : null,
+  "username" : null,
+  "role" : null,
+  "accessToken" : null,
+  "refreshToken" : null,
+  "error" : null,
+  "createId" : null,
+  "createDt" : null,
+  "updateId" : null,
+  "updateDt" : null
+}</code></pre>
+</div>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -527,7 +557,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     -H 'Content-Type: application/json;charset=UTF-8' \
     -d '{
   "email" : "cyj@gmail.com",
-  "password" : "1111"
+  "password" : "1111",
+  "username" : "최윤진",
+  "role" : "ROLE_USER"
 }'</code></pre>
 </div>
 </div>
@@ -555,8 +587,36 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">비밀번호</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>username</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>role</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">권한</p></td>
+</tr>
 </tbody>
 </table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
+  "id" : 1,
+  "email" : null,
+  "password" : null,
+  "username" : null,
+  "role" : null,
+  "accessToken" : null,
+  "refreshToken" : null,
+  "error" : null,
+  "createId" : null,
+  "createDt" : null,
+  "updateId" : null,
+  "updateDt" : null
+}</code></pre>
+</div>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -585,7 +645,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-11-13 12:27:12 +0900
+Last updated 2022-11-13 20:51:55 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

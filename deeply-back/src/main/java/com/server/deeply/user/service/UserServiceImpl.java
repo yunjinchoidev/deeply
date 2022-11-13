@@ -1,0 +1,128 @@
+package com.server.deeply.user.service;
+
+import com.server.deeply.config.redis.RefreshRedisRepository;
+import com.server.deeply.config.redis.RefreshRedisToken;
+import com.server.deeply.config.security.TokenProvider;
+import com.server.deeply.user.dto.UserRequestDto;
+import com.server.deeply.user.dto.UserResponseDto;
+import com.server.deeply.user.jpa.User;
+import com.server.deeply.user.mapper.UserMapper;
+import com.server.deeply.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserDetailsService{
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final RefreshRedisRepository refreshRedisRepository;
+    private final TokenProvider tokenProvider;
+
+
+
+       /**
+     * Spring-Security의 유저 인증 처리 과정중 유저객체를 만드는 과정
+     * !! 보통 구글링시 UserDetails 클래스를 따로 만들어서 사용하지만 UserDetails 인터페이스를 구현한
+     * User 라는 클래스를 시큐리티가 제공해줘서 굳이 만들어주지 않음
+     * @param username userId
+     * @return UserDetails (security에서 사용하는 유저 정보를 가진 객체)
+     * @throws UsernameNotFoundException userId로 유저를 찾지 못했을 경우 발생하는 에러
+     */
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("userId : " + username + " was not found"));
+
+         return User.builder()
+                .username(user.getUsername())
+                .password(passwordEncoder.encode(user.getPassword()))
+                .role("USER")
+                .build();
+    }
+
+
+    public Long saveUser(UserRequestDto param) {
+        Optional<User> findUser = userRepository.findUserByEmail(param.getEmail());
+
+        if (findUser.isPresent()) {
+            throw new IllegalStateException("이미 가입된 이메일입니다.");
+        }
+
+        param.setEncodedPassword(passwordEncoder.encode(param.getPassword()));
+        User user = UserMapper.INSTANCE.toEntity(param);
+
+        User saveUser = userRepository.save(user);
+        return saveUser.getId();
+    }
+
+    public Optional<User> findUserByEmail(UserRequestDto param) {
+        Optional<User> user = userRepository.findUserByEmail(param.getEmail());
+        return user;
+    }
+
+    public Optional<User> findUserById(UserRequestDto param) {
+        Optional<User> user = userRepository.findById(param.getId());
+        return user;
+    }
+
+    public UserResponseDto getByCredentials(final String email,
+                                            final String password,
+                                            final PasswordEncoder encoder) {
+
+        final User originalUser = userRepository.findByEmail(email);
+
+        UserDetails userDetails = loadUserByUsername(email);
+
+        // matches 메서드를 이용해 패스워드가 같은지 확인
+        if (!encoder.matches(password, originalUser.getPassword())) {
+            throw new BadCredentialsException(userDetails.getUsername() + "Invalid password");
+        }
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+
+        // refresh token 발급 및 저장
+        String refreshToken = tokenProvider.createRefreshToken(authentication);
+        RefreshRedisToken token = RefreshRedisToken.createToken(email, refreshToken);
+
+        // 기존 토큰이 있으면 수정, 없으면 생성
+        refreshRedisRepository.save(token);
+
+
+        // accessToken과 refreshToken 리턴
+        final UserResponseDto responseUserDTO = UserResponseDto.builder()
+                .id(originalUser.getId())
+                .email(email)
+                .password(password)
+                .username(originalUser.getUsername())
+                .role(originalUser.getRole())
+                .accessToken("Bearer-" + tokenProvider.create(originalUser))
+                .refreshToken("Bearer-" + refreshToken)
+                .build();
+        return responseUserDTO;
+    }
+
+
+
+
+
+
+
+
+}

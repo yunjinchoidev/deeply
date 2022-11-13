@@ -467,7 +467,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     -H 'Content-Type: application/json;charset=UTF-8' \
     -d '{
   "email" : "cyj@gmail.com",
-  "password" : "1111"
+  "password" : "1111",
+  "username" : "최윤진",
+  "role" : "ROLE_USER"
 }'</code></pre>
 </div>
 </div>
@@ -495,8 +497,36 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">비밀번호</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>username</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>role</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">권한</p></td>
+</tr>
 </tbody>
 </table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
+  "id" : 1,
+  "email" : null,
+  "password" : null,
+  "username" : null,
+  "role" : null,
+  "accessToken" : null,
+  "refreshToken" : null,
+  "error" : null,
+  "createId" : null,
+  "createDt" : null,
+  "updateId" : null,
+  "updateDt" : null
+}</code></pre>
+</div>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -523,7 +553,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h3 id="resources-user-create"><a class="link" href="#resources-user-create">1.2 로그인</a></h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/auth/signup' -i -X POST \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/auth/signin' -i -X POST \
     -H 'Content-Type: application/json;charset=UTF-8' \
     -d '{
   "email" : "cyj@gmail.com",
@@ -557,6 +587,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 </tbody>
 </table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-none hljs">{
+  "id" : 1,
+  "email" : "cyj@gmail.com",
+  "password" : "1111",
+  "username" : "최윤진",
+  "role" : "ROLE_USER",
+  "accessToken" : "Bearer-eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5dW5qaW4yMUBobWFpbC5jb20iLCJpc3MiOiJkZW1vIGFwcCIsImlhdCI6MTY2ODMwOTE0MiwiZXhwIjoxNjY4Mzk1NTQyfQ.d8CsN8YXJNOJOkVfTiOAbB6NsKsuUo8Oo__YUkGqSiM2RRdVQo_tcIhpw44sqyNzwoJdJsgfENymCLC5n_p6dw",
+  "refreshToken" : "Bearer-eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5dW5qaW4yMUBobWFpbC5jb20iLCJpc3MiOiJkZW1vIGFwcCIsImlhdCI6MTY2ODMwOTE0MiwiZXhwIjoxNjY4Mzk1NTQyfQ.d8CsN8YXJNOJOkVfTiOAbB6NsKsuUo8Oo__YUkGqSiM2RRdVQo_tcIhpw44sqyNzwoJdJsgfENymCLC5n_p6dw",
+  "error" : null,
+  "createId" : null,
+  "createDt" : null,
+  "updateId" : null,
+  "updateDt" : null
+}</code></pre>
+</div>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -576,6 +624,36 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">유저 아이디</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>email</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이메일</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>password</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">비밀번호</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>username</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>role</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">권한</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>accessToken</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">액세스 토큰</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>refreshToken</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">리프레시 토큰</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -585,7 +663,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-11-13 12:27:12 +0900
+Last updated 2022-11-13 20:52:35 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">

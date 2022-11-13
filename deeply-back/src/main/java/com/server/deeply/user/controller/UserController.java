@@ -3,7 +3,7 @@ package com.server.deeply.user.controller;
 import com.server.deeply.config.security.TokenProvider;
 import com.server.deeply.user.dto.UserRequestDto;
 import com.server.deeply.user.jpa.User;
-import com.server.deeply.user.service.UserService;
+import com.server.deeply.user.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
 

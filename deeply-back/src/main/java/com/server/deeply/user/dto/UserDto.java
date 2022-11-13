@@ -13,7 +13,7 @@ public class UserDto {
     private String email;
     private String password;
     private String username;
-    private String role;
+    private String roles;
 
     @Builder.Default
     private Integer createId = null; // 생성자 ID

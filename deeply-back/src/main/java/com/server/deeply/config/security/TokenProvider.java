@@ -5,7 +5,10 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -17,8 +20,20 @@ import java.util.Date;
 
 @Slf4j
 @Service
-public class TokenProvider {
+public class TokenProvider  implements InitializingBean {
     private static final String SECRET_KEY = "Q4NSl604sgyHJj1qwEkR3ycUeR4uUAt7WJraD7EN3O9DVM4yyYuHxMEbSF4XXyYJkal13eqgB0F7Bq4H";
+
+    private final long refreshTokenValidityInMs = 604800;
+
+  private Key key;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {  // init()
+        String encodedKey = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes());
+        key = Keys.hmacShaKeyFor(encodedKey.getBytes());
+        // https://budnamu.tistory.com/entry/JWT 참고
+    }
+
 
     public String create(User userEntity) {
         // 기한 지금으로부터 1일로 설정
@@ -77,7 +92,17 @@ public class TokenProvider {
         return encoder.encodeToString(bytes);
     }
 
+   public String createRefreshToken(Authentication authentication){
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + refreshTokenValidityInMs);
 
+        return Jwts.builder()
+                .setSubject(authentication.getName())
+                .setIssuedAt(now)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(validity)
+                .compact();
+    }
 
 }
 

@@ -3,8 +3,7 @@ package com.server.deeply.user.controller;
 import com.server.deeply.config.security.TokenProvider;
 import com.server.deeply.user.dto.UserRequestDto;
 import com.server.deeply.user.dto.UserResponseDto;
-import com.server.deeply.user.jpa.User;
-import com.server.deeply.user.service.UserService;
+import com.server.deeply.user.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class SignController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
 
@@ -44,23 +43,14 @@ public class SignController {
      */
     @PostMapping("/signin")
     public ResponseEntity<?> authenticate(@RequestBody UserRequestDto userDTO) {
-        User user = userService.getByCredentials(
-                userDTO.getEmail(),
-                userDTO.getPassword(),
-                passwordEncoder);
+
+        UserResponseDto userResponseDto = userService.getByCredentials(userDTO.getEmail(),
+                                                                        userDTO.getPassword(),
+                                                                        passwordEncoder);
 
         // 로그인 성공
-        if (user != null) {
-            // 토큰 생성
-            final String token = tokenProvider.create(user);
-            final UserResponseDto responseUserDTO = UserResponseDto.builder()
-                    .id(user.getId())
-                    .email(user.getEmail())
-                    .username(user.getUsername())
-                    .password(user.getPassword())
-                    .token(token)
-                    .build();
-            return ResponseEntity.ok().body(responseUserDTO);
+        if (userResponseDto != null) {
+            return ResponseEntity.ok().body(userResponseDto);
 
         // 로그인 실패
         } else {

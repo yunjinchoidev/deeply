@@ -1,10 +1,12 @@
 package com.server.deeply.user.controller;
 
 import com.google.gson.Gson;
+import com.server.deeply.common.enums.ENUM_ROLE;
 import com.server.deeply.config.security.TokenProvider;
 import com.server.deeply.user.dto.UserRequestDto;
+import com.server.deeply.user.dto.UserResponseDto;
 import com.server.deeply.user.jpa.User;
-import com.server.deeply.user.service.UserService;
+import com.server.deeply.user.service.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,7 +46,7 @@ class SignControllerTest {
     private SignController target;
 
     @Mock
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Mock
     private TokenProvider tokenProvider;
@@ -68,6 +70,8 @@ class SignControllerTest {
         UserRequestDto param = UserRequestDto.builder()
                 .email("cyj@gmail.com")
                 .password("1111")
+                .username("최윤진")
+                .role(ENUM_ROLE.ROLE_USER.toString())
                 .build();
 
         doReturn(1L).when(userService).saveUser(any());
@@ -82,7 +86,9 @@ class SignControllerTest {
                         preprocessResponse(prettyPrint()),  // (3)
                         requestFields(                        // (4)
                                 fieldWithPath("email").description("이메일"),
-                                fieldWithPath("password").description("비밀번호")
+                                fieldWithPath("password").description("비밀번호"),
+                                fieldWithPath("username").description("이름"),
+                                fieldWithPath("role").description("권한")
                         ),
                         relaxedResponseFields(
                                 fieldWithPath("id").description("유저 아이디").optional()
@@ -93,21 +99,31 @@ class SignControllerTest {
     @Test
     @DisplayName("로그인")
     void login() throws Exception {
+        String accessToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5dW5qaW4yMUBobWFpbC5jb20iLCJpc3MiOiJkZW1vIGFwcCIsImlhdCI6MTY2ODMwOTE0MiwiZXhwIjoxNjY4Mzk1NTQyfQ.d8CsN8YXJNOJOkVfTiOAbB6NsKsuUo8Oo__YUkGqSiM2RRdVQo_tcIhpw44sqyNzwoJdJsgfENymCLC5n_p6dw";
+        String refreshToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5dW5qaW4yMUBobWFpbC5jb20iLCJpc3MiOiJkZW1vIGFwcCIsImlhdCI6MTY2ODMwOTE0MiwiZXhwIjoxNjY4Mzk1NTQyfQ.d8CsN8YXJNOJOkVfTiOAbB6NsKsuUo8Oo__YUkGqSiM2RRdVQo_tcIhpw44sqyNzwoJdJsgfENymCLC5n_p6dw";
+
+        UserResponseDto result = UserResponseDto.builder()
+                .id(1L)
+                .email("cyj@gmail.com")
+                .password("1111")
+                .username("최윤진")
+                .role("ROLE_USER")
+                .accessToken("Bearer-" + accessToken)
+                .refreshToken("Bearer-" + refreshToken)
+                .build();
 
         User user = User.builder()
                 .email("cyj@gmail.com")
                 .password("1111")
                 .build();
-        String token ="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ5dW5qaW4yMUBobWFpbC5jb20iLCJpc3MiOiJkZW1vIGFwcCIsImlhdCI6MTY2ODMwOTE0MiwiZXhwIjoxNjY4Mzk1NTQyfQ.d8CsN8YXJNOJOkVfTiOAbB6NsKsuUo8Oo__YUkGqSiM2RRdVQo_tcIhpw44sqyNzwoJdJsgfENymCLC5n_p6dw";
-        doReturn(user).when(userService).getByCredentials(any(),any(),any());
-        doReturn(token).when(tokenProvider).create(any());
+        doReturn(result).when(userService).getByCredentials(any(), any(), any());
 
         this.mockMvc.perform(post("/auth/signin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(user)))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("post_auth_singup",
+                .andDo(document("post_auth_singin",
                         preprocessRequest(prettyPrint()),   // (2)
                         preprocessResponse(prettyPrint()),  // (3)
                         requestFields(                        // (4)
@@ -115,7 +131,13 @@ class SignControllerTest {
                                 fieldWithPath("password").description("비밀번호")
                         ),
                         relaxedResponseFields(
-                                fieldWithPath("id").description("유저 아이디").optional()
+                                fieldWithPath("id").description("유저 아이디"),
+                                fieldWithPath("email").description("이메일"),
+                                fieldWithPath("password").description("비밀번호"),
+                                fieldWithPath("username").description("이름"),
+                                fieldWithPath("role").description("권한"),
+                                fieldWithPath("accessToken").description("액세스 토큰"),
+                                fieldWithPath("refreshToken").description("리프레시 토큰")
                         ))
                 );
     }

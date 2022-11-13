@@ -18,10 +18,12 @@ endif::[]
 === 1.1 회원 가입
 include::{snippets}/post_auth_singup/curl-request.adoc[]
 include::{snippets}/post_auth_singup/request-fields.adoc[]
+include::{snippets}/post_auth_singup/response-body.adoc[]
 include::{snippets}/post_auth_singup/response-fields.adoc[]
 
 [[resources-user-create]]
 === 1.2 로그인
-include::{snippets}/post_auth_singup/curl-request.adoc[]
-include::{snippets}/post_auth_singup/request-fields.adoc[]
-include::{snippets}/post_auth_singup/response-fields.adoc[]
+include::{snippets}/post_auth_singin/curl-request.adoc[]
+include::{snippets}/post_auth_singin/request-fields.adoc[]
+include::{snippets}/post_auth_singin/response-body.adoc[]
+include::{snippets}/post_auth_singin/response-fields.adoc[]

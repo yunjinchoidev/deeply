@@ -2,7 +2,7 @@ package com.server.deeply.user.controller;
 
 import com.google.gson.Gson;
 import com.server.deeply.user.dto.UserRequestDto;
-import com.server.deeply.user.service.UserService;
+import com.server.deeply.user.service.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -40,7 +40,7 @@ class UserControllerTest {
     private UserController target;
 
     @Mock
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
     private WebApplicationContext context;
