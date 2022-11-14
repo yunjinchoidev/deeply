@@ -11,10 +11,7 @@ import com.server.deeply.user.mapper.UserMapper;
 import com.server.deeply.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -87,16 +84,25 @@ public class UserServiceImpl implements UserDetailsService {
         return user;
     }
 
-    public Optional<User> findUserById(UserRequestDto param) {
-        Optional<User> user = userRepository.findById(param.getId());
-        return user;
+    public UserResponseDto findById(UserRequestDto param) {
+        User user = userRepository.findById(param.getId()).get();
+        UserResponseDto result = UserMapper.INSTANCE.toDto(user);
+        return result;
     }
 
-    public Page<User> findAll(UserRequestDto param) {
+    public Page<UserResponseDto> findAll(UserRequestDto param) {
 
         Sort sort = Sort.by(param.getOrderBy()).ascending();
         Pageable pageable = PageRequest.of(param.getPage(), param.getPageSize(), sort);
-        return userRepository.findAll(pageable);
+
+        List<User> userList = userRepository.findAll();
+
+        List<UserResponseDto> userResponseDtos = UserMapper.INSTANCE.toDtoList(userList);
+
+        Page<UserResponseDto> result =
+                new PageImpl<>(userResponseDtos, pageable, userList.size());
+
+        return result;
     }
 
     public UserResponseDto updateUser(UserRequestDto param) {
@@ -144,9 +150,6 @@ public class UserServiceImpl implements UserDetailsService {
                 .build();
         return responseUserDTO;
     }
-
-
-
 
 
     public ResponseEntity<?> logout(UserRequestDto logout) {

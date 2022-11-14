@@ -36,7 +36,8 @@ public class UserController {
                 .id(userId)
                 .build();
         log.info("userService->findUserById");
-        Optional<User> result = userService.findUserById(userRequestDto);
+        UserResponseDto result = userService.findById(userRequestDto);
+
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(result);
@@ -45,10 +46,10 @@ public class UserController {
     /**
      * 회원 정보 리스트 조회
      */
-    @PutMapping("/user/list")
+    @PostMapping("/user/list")
     public ResponseEntity getUserList(@RequestBody UserRequestDto param) {
         log.info("userService->findAll");
-        Page<User> result = this.userService.findAll(param);
+        Page<UserResponseDto> result = this.userService.findAll(param);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(result);
@@ -59,7 +60,7 @@ public class UserController {
      */
     @PutMapping("/user")
     public ResponseEntity updateUser(@RequestBody UserRequestDto param) {
-        log.info("userService->findAll");
+        log.info("userService->updateUser");
         UserResponseDto result = this.userService.updateUser(param);
         return ResponseEntity
                 .status(HttpStatus.OK)

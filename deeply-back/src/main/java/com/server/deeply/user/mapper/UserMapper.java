@@ -6,6 +6,10 @@ import com.server.deeply.user.jpa.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
+
+import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface UserMapper {
@@ -13,6 +17,8 @@ public interface UserMapper {
 
     @Mapping(source = "encodedPassword", target = "password")
     User toEntity(UserRequestDto userRequestDto);
-
     UserResponseDto toDto(User user);
+    UserResponseDto toDtoOptional(Optional<User> user);
+
+    List<UserResponseDto> toDtoList(List<User> users);
 }
