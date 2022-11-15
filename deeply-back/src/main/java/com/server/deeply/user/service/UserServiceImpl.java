@@ -4,6 +4,8 @@ import com.server.deeply.common.Response;
 import com.server.deeply.config.redis.RefreshRedisRepository;
 import com.server.deeply.config.redis.RefreshRedisToken;
 import com.server.deeply.config.security.TokenProvider;
+import com.server.deeply.profile.dto.ProfileRequestDto;
+import com.server.deeply.profile.service.ProfileService;
 import com.server.deeply.user.dto.UserRequestDto;
 import com.server.deeply.user.dto.UserResponseDto;
 import com.server.deeply.user.jpa.User;
@@ -41,6 +43,7 @@ public class UserServiceImpl implements UserDetailsService {
     private final TokenProvider tokenProvider;
     private final Response response;
     private final RedisTemplate redisTemplate;
+    private final ProfileService profileService;
 
 
     /**
@@ -66,6 +69,7 @@ public class UserServiceImpl implements UserDetailsService {
 
 
     public Long saveUser(UserRequestDto param) {
+
         Optional<User> findUser = userRepository.findUserByEmail(param.getEmail());
 
         if (findUser.isPresent()) {
@@ -76,6 +80,12 @@ public class UserServiceImpl implements UserDetailsService {
         User user = UserMapper.INSTANCE.toEntity(param);
 
         User saveUser = userRepository.save(user);
+        ProfileRequestDto profileRequestDto
+                = ProfileRequestDto.builder().user(saveUser).build();
+
+        // 프로필 정보도 같이 저장해주도록 한다.
+        profileService.saveProfile(profileRequestDto);
+
         return saveUser.getId();
     }
 
@@ -84,12 +94,20 @@ public class UserServiceImpl implements UserDetailsService {
         return user;
     }
 
+    /*
+    * 유저 정보 단일 조회
+     */
     public UserResponseDto findById(UserRequestDto param) {
         User user = userRepository.findById(param.getId()).get();
         UserResponseDto result = UserMapper.INSTANCE.toDto(user);
         return result;
     }
 
+    /**
+     * 유저 정보 리스트 조회
+     * @param param
+     * @return
+     */
     public Page<UserResponseDto> findAll(UserRequestDto param) {
 
         Sort sort = Sort.by(param.getOrderBy()).ascending();
@@ -105,6 +123,11 @@ public class UserServiceImpl implements UserDetailsService {
         return result;
     }
 
+    /**
+     * 유저 정보 수정
+     * @param param
+     * @return
+     */
     public UserResponseDto updateUser(UserRequestDto param) {
         User user = UserMapper.INSTANCE.toEntity(param);
         User updateUser = userRepository.save(user);
@@ -112,6 +135,13 @@ public class UserServiceImpl implements UserDetailsService {
         return userResponseDto;
     }
 
+    /**
+     * 로그인
+     * @param email
+     * @param password
+     * @param encoder
+     * @return
+     */
     public UserResponseDto getByCredentials(final String email,
                                             final String password,
                                             final PasswordEncoder encoder) {
@@ -152,6 +182,11 @@ public class UserServiceImpl implements UserDetailsService {
     }
 
 
+    /**
+     * 로그아웃
+     * @param logout
+     * @return
+     */
     public ResponseEntity<?> logout(UserRequestDto logout) {
         // 1. Access Token 검증
         if (!tokenProvider.validateToken(logout.getAccessToken())) {

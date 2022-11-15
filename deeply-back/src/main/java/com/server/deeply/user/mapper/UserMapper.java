@@ -18,7 +18,5 @@ public interface UserMapper {
     @Mapping(source = "encodedPassword", target = "password")
     User toEntity(UserRequestDto userRequestDto);
     UserResponseDto toDto(User user);
-    UserResponseDto toDtoOptional(Optional<User> user);
-
     List<UserResponseDto> toDtoList(List<User> users);
 }
