@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProfileRequestDto {
 
-    private Long id;
-    private User user;
-    private String loc;
-    private String age;
-    private String phoneNumber;
-    private String gender;
-    private Integer money;
-    private Integer childrenYn; // 자녀유무
+    private Long id; // 프로필 아이디
+    private User user; // 유저
+    private String loc; // 사는 곳
+    private Integer age; // 나이
+    private String phoneNumber; // 휴대폰 번호
+    private String gender; // 성별
+    private Integer money; // 재산
+    private String childrenYn; // 자녀유무
 
 }

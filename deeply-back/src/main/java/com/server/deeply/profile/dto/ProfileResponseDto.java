@@ -1,24 +1,27 @@
 package com.server.deeply.profile.dto;
 
+import com.server.deeply.profile.jpa.Profile;
 import com.server.deeply.user.jpa.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Setter
 public class ProfileResponseDto {
 
-    private Long id;
-    private User user;
-    private String loc;
-    private String age;
-    private String phoneNumber;
-    private String gender;
-    private Integer money;
-    private Integer childrenYn; // 자녀유무
+    private Long id; // 프로필 아이디
+    private User user; // 유저 아이디
+    private String loc; // 거주지
+    private Integer age; // 나이
+    private String phoneNumber; // 휴대폰 번호
+    private String gender; // 성별
+    private Integer money; // 재산
+    private String childrenYn; // 자녀유무
+
+    private String email;
+    private String username;
+    private String role;
 
 }

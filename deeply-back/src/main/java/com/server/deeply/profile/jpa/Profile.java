@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 
 @Entity
 @Getter
@@ -27,11 +28,11 @@ public class Profile extends BaseEntity {
     private User user;   // 유저 아이디
 
     private String loc; // 거주지
-    private String age; // 나이
+    private Integer age; // 나이
     private String phoneNumber; // 휴대폰번호
     private String gender; // 성별
     private Integer money; // 자산
-    private Integer childrenYn; // 자녀유무
+    private String childrenYn; // 자녀유무
 
 
 }
