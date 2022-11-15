@@ -1,0 +1,57 @@
+import axios from "axios";
+import data from "bootstrap/js/src/dom/data";
+
+export function loginUser(dataToSubmit){
+
+    const request = axios({
+            method: "post",
+            url: "http://localhost:9000/auth/signin",
+            data: dataToSubmit,
+        })
+            .then((res) => {
+                console.log(res);
+                const accessToken = res.data.accessToken;
+                const refreshToken = res.data.refreshToken;
+                const email = res.data.email;
+                alert("accessToken:"+accessToken+"\n refreshToken"+refreshToken)
+                alert("로그인 성공했습니다. \n 디플리에 오신 걸 환영합니다.")
+                // document.location.href = "/";
+            })
+            .catch((error) => {
+                console.log(error);
+                alert("회원 정보가 정확하지 않습니다.")
+            });
+    // const request = axios.post("http://localhost:9000/auth/signin", dataToSubmit)
+    //     .then(response => response.data)
+    return {
+        type: "LOGIN_USER",
+        payload: request
+    }
+}
+
+export function registerUser(dataToSubmit){
+
+    const request = axios({
+            method: "post",
+            url: "http://localhost:9000/auth/signup",
+            data: dataToSubmit,
+        })
+            .then((res) => {
+                console.log(res);
+                const id = res.data.id;
+                console.log("id:"+id)
+                console.log("회원가입에 성공했습니다.. \n 디플리에 오신 걸 환영합니다.")
+
+                // document.location.href = "/";
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+    // const request = axios.post("http://localhost:9000/auth/signin", dataToSubmit)
+    //     .then(response => response.data)
+    return {
+        type: "LOGIN_USER",
+        payload: request
+    }
+}

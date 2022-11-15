@@ -5,12 +5,26 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 import {BrowserRouter} from "react-router-dom";
+import {Provider} from "react-redux";
+import {applyMiddleware, createStore} from "redux";
+import {composeWithDevTools} from 'redux-devtools-extension';
+import promiseMiddleware from "redux-promise"
+import ReduxThunk from "redux-thunk"
+import Reducers from "./reducers";
+import rootReducer from "./reducers";
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const store = createStore(
+    Reducers
+);
+
 root.render(
     <BrowserRouter>
         <React.StrictMode>
-            <App/>
+            <Provider store={store}>
+                <App/>
+            </Provider>
         </React.StrictMode>
     </BrowserRouter>
 );
