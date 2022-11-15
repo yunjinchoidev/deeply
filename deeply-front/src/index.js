@@ -6,23 +6,37 @@ import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
-import {applyMiddleware, createStore} from "redux";
+
+// redux things
+
+// 다운로드 받은 두 패키지
+
+import {applyMiddleware, compose, createStore} from "redux";
 import {composeWithDevTools} from 'redux-devtools-extension';
-import promiseMiddleware from "redux-promise"
+import PromiseMiddleware from "redux-promise"
+import { createLogger } from 'redux-logger';
 import ReduxThunk from "redux-thunk"
 import Reducers from "./reducers";
-import rootReducer from "./reducers";
+import promiseMiddleware from "redux-promise";
+import createSagaMiddleware from 'redux-saga';
 
 
+const logger = createLogger();
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const store = createStore(
-    Reducers
-);
+const sagaMiddleware = createSagaMiddleware();
+const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore)
+
+// const store = createStore(
+//     rootReducer,
+//     composeWithDevTools(applyMiddleware(logger, ReduxThunk, sagaMiddleware))
+// );
 
 root.render(
     <BrowserRouter>
         <React.StrictMode>
-            <Provider store={store}>
+            <Provider store={createStoreWithMiddleware(Reducers,
+                composeWithDevTools()
+                )}>
                 <App/>
             </Provider>
         </React.StrictMode>

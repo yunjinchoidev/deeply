@@ -9,6 +9,8 @@ import Layout from "./components/common/Layout";
 import LogoutPage from "./pages/LogoutPage";
 import MyPage from "./pages/MyPage";
 import CustomerCenterPage from "./pages/CustomerCenterPage";
+import Home from "./pages/Home";
+import BoardListPage from "./pages/BoardListPage";
 
 
 function App() {
@@ -16,13 +18,14 @@ function App() {
       <>
           <Routes>
               <Route element={<Layout/>}>
-                  <Route path="/" element={<PostListPage />} />
+                  <Route path="/" element={<Home />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/logout" element={<LogoutPage />} />
                   <Route path="/register" element={<RegisterPage />} />
                   <Route path="/mypage" element={<MyPage />} />
                   <Route path="/customercenter" element={<CustomerCenterPage />} />
                   <Route path="/write" element={<WritePage />} />
+                  <Route path="/boardList" element={<BoardListPage/>} />
               </Route>
                   <Route path="/@:username">
                       <Route index element={<PostListPage />} />

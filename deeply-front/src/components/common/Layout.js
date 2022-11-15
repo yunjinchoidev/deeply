@@ -27,6 +27,9 @@ const Layout = () => {
                             <li className="nav-item">
                                 <a className="nav-link" href="/customercenter">고객센터</a>
                             </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/boardList">게시판</a>
+                            </li>
 
                         </ul>
                     </div>

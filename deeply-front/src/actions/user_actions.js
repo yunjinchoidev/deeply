@@ -1,5 +1,6 @@
 import axios from "axios";
 import data from "bootstrap/js/src/dom/data";
+import {LOGIN_USER, REGISTER_USER} from "./types";
 
 export function loginUser(dataToSubmit){
 
@@ -13,6 +14,8 @@ export function loginUser(dataToSubmit){
                 const accessToken = res.data.accessToken;
                 const refreshToken = res.data.refreshToken;
                 const email = res.data.email;
+                localStorage.setItem("accessToken",accessToken)
+                console.log(localStorage.getItem("accessToken"))
                 alert("accessToken:"+accessToken+"\n refreshToken"+refreshToken)
                 alert("로그인 성공했습니다. \n 디플리에 오신 걸 환영합니다.")
                 // document.location.href = "/";
@@ -24,7 +27,7 @@ export function loginUser(dataToSubmit){
     // const request = axios.post("http://localhost:9000/auth/signin", dataToSubmit)
     //     .then(response => response.data)
     return {
-        type: "LOGIN_USER",
+        type: LOGIN_USER,
         payload: request
     }
 }
@@ -51,7 +54,7 @@ export function registerUser(dataToSubmit){
     // const request = axios.post("http://localhost:9000/auth/signin", dataToSubmit)
     //     .then(response => response.data)
     return {
-        type: "LOGIN_USER",
+        type: REGISTER_USER,
         payload: request
     }
 }
