@@ -2,9 +2,11 @@ package com.server.deeply.user.controller;
 
 import com.server.deeply.common.Helper;
 import com.server.deeply.common.Response;
+import com.server.deeply.config.security.JwtTokenUtil;
 import com.server.deeply.config.security.TokenProvider;
 import com.server.deeply.user.dto.UserRequestDto;
 import com.server.deeply.user.dto.UserResponseDto;
+import com.server.deeply.user.jpa.User;
 import com.server.deeply.user.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 
 @RestController
@@ -28,6 +33,7 @@ public class SignController {
     private final TokenProvider tokenProvider;
     private final RedisTemplate redisTemplate;
     private final Response response;
+    private final JwtTokenUtil jwtTokenUtil;
 
     /**
      * 회원가입
@@ -77,6 +83,25 @@ public class SignController {
         }
         ResponseEntity<?> result = userService.logout(logout);
         return result;
+    }
+
+
+    @GetMapping("/check")
+    public ResponseEntity<?> check(HttpServletRequest request) {
+        // validation check
+        String token = jwtTokenUtil.parseBearerToken(request);
+        String email = jwtTokenUtil.getEmailFormToken(token);
+        String role = jwtTokenUtil.getRoleFromToken(token);
+        UserRequestDto userRequestDto = UserRequestDto.builder().email(email).build();
+        UserResponseDto result = userService.findUserByEmail(userRequestDto);
+        result.setIsAuth(true);
+
+        if ("ROLE_ADMIN".equals(role)) {
+            result.setIsAdmin(true);
+        } else {
+            result.setIsAdmin(false);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 

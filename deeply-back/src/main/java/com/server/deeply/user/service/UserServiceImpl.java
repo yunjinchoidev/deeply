@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserDetailsService {
         return User.builder()
                 .username(user.getEmail())
                 .password(passwordEncoder.encode(user.getPassword()))
-                .role("USER")
+                .role("ROLE_USER")
                 .build();
     }
 
@@ -89,9 +89,10 @@ public class UserServiceImpl implements UserDetailsService {
         return saveUser.getId();
     }
 
-    public Optional<User> findUserByEmail(UserRequestDto param) {
-        Optional<User> user = userRepository.findUserByEmail(param.getEmail());
-        return user;
+    public UserResponseDto findUserByEmail(UserRequestDto param) {
+        User user = userRepository.findUserByEmail(param.getEmail()).get();
+        UserResponseDto result = UserMapper.INSTANCE.toDto(user);
+        return result;
     }
 
     /*

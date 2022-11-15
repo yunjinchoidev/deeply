@@ -1,9 +1,6 @@
 package com.server.deeply.user.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +8,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 @Builder
+@Setter
 public class UserResponseDto {
 
     private Long id;
@@ -23,6 +21,9 @@ public class UserResponseDto {
     private String accessToken;
     private String refreshToken;
     private String error;
+
+    private Boolean isAdmin;
+    private Boolean isAuth;
 
     @Builder.Default
     private Integer createId = null; // 생성자 ID

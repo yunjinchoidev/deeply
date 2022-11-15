@@ -45,18 +45,8 @@ public class ProfileService {
      */
     @Transactional(readOnly = true)
     public Page<ProfileResponseDto> searchAll(ProfileSearchRequestDto param){
-
         Sort sort = Sort.by(param.getOrderBy()).ascending();
         Pageable pageable = PageRequest.of(param.getPage(), param.getPageSize(), sort);
-
-//        List<User> userList = userRepository.findAll();
-//
-//        List<UserResponseDto> userResponseDtos = UserMapper.INSTANCE.toDtoList(userList);
-//
-//        Page<UserResponseDto> result =
-//                new PageImpl<>(userResponseDtos, pageable, userList.size());
-//        PageRequest of = PageRequest.of(param.getPage(), param.getPageSize());{
-
         Page<ProfileResponseDto> result = profileCustomRepository.searchAll(param, pageable);
         return result;
     }

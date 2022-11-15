@@ -1,8 +1,10 @@
 package com.server.deeply.config.security;
 
 import com.server.deeply.user.jpa.User;
+import com.server.deeply.user.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
@@ -18,19 +20,19 @@ import java.security.Key;
 import java.security.SecureRandom;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class TokenProvider implements InitializingBean {
+
     private static final String SECRET_KEY = "secret-key-lalala-lululu-fucking-error-WeakKeyException-not-secure-enough";
-private static final String AUTHORITIES_KEY = "auth";
+    private static final String AUTHORITIES_KEY = "auth";
     private final long refreshTokenValidityInMs = 604800;
     private final long tokenValidityInMs = 604800;
+    private final UserRepository userRepository;
 
     private UserDetailsService userDetailsService;
 
@@ -44,12 +46,18 @@ private static final String AUTHORITIES_KEY = "auth";
         // https://budnamu.tistory.com/entry/JWT 참고
     }
 
+    /**
+     * 토큰 생성
+     * @param authentication
+     * @return
+     */
     public String createAccessToken(Authentication authentication) {
         Date now = new Date();
         Date validity = new Date(now.getTime() + tokenValidityInMs);
-
+        User user = userRepository.findUserByEmail(authentication.getName()).get();
         return Jwts.builder()
                 .setSubject(authentication.getName())
+                .claim("role",user.getRole())
                 .setIssuedAt(now) // 발행시간
                 .signWith(key, SignatureAlgorithm.HS512) // 암호화
                 .setExpiration(validity) // 만료
@@ -74,7 +82,6 @@ private static final String AUTHORITIES_KEY = "auth";
 //        UserDetails userDetails = userDetailsService.loadUserByUsername(claims.getSubject());
 //        return new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
 //    }
-
 
 
     // JWT 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
@@ -108,7 +115,7 @@ private static final String AUTHORITIES_KEY = "auth";
     // 토큰 유효성 검사
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);
