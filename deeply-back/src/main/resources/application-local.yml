@@ -29,6 +29,10 @@ spring:
     path match:
       matching-strategy: ant_path_matcher
 
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
   redis:
     port: 6379
     host: localhost
