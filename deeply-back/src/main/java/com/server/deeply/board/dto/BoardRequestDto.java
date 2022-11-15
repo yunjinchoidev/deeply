@@ -26,4 +26,8 @@ public class BoardRequestDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
 
+    private Integer page;
+    private Integer pageSize;
+    private String orderBy;
+
 }

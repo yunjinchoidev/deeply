@@ -1,10 +1,8 @@
 package com.server.deeply.board.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.server.deeply.file.dto.FileResponseDto;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Setter
 public class BoardResponseDto {
 
     private Long id;
@@ -21,5 +20,7 @@ public class BoardResponseDto {
     private Long fileId;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
+
+    private FileResponseDto fileResponseDto;
 
 }
