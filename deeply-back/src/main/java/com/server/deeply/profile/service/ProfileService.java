@@ -36,6 +36,11 @@ public class ProfileService {
         return result;
     }
 
+    public ProfileResponseDto findProfileByUserId(ProfileRequestDto profileRequestDto) {
+        ProfileResponseDto result = profileCustomRepository.findByUserId(profileRequestDto.getUserId());
+        return result;
+    }
+
     /**
      * 프로필 검색 페이징
      *
@@ -44,7 +49,7 @@ public class ProfileService {
      * @return
      */
     @Transactional(readOnly = true)
-    public Page<ProfileResponseDto> searchAll(ProfileSearchRequestDto param){
+    public Page<ProfileResponseDto> searchAll(ProfileSearchRequestDto param) {
         Sort sort = Sort.by(param.getOrderBy()).ascending();
         Pageable pageable = PageRequest.of(param.getPage(), param.getPageSize(), sort);
         Page<ProfileResponseDto> result = profileCustomRepository.searchAll(param, pageable);

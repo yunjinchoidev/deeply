@@ -49,7 +49,13 @@ public class JwtTokenUtil implements Serializable {
         String role = String.valueOf(claimsJws.getBody().get("role"));
         return role;
     }
-
+    public Long getUserIdFromToken(String token) {
+        String encodedKey = Base64.getEncoder().encodeToString(secret.getBytes());
+        SecretKey secretKey = Keys.hmacShaKeyFor(encodedKey.getBytes());
+        Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
+        Long userId = Long.valueOf(String.valueOf(claimsJws.getBody().get("id")));
+        return userId;
+    }
 
     //jwt 토큰에서 만료 날짜 검색.
     public Date getExpirationDateFromToken(String token) {

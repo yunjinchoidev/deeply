@@ -41,6 +41,7 @@ public class ProfileRepositoryImpl implements ProfileRepositoryCustom {
                         Projections.bean(
                                 ProfileResponseDto.class
                                 , profile.id
+                                , profile.user
                                 , profile.gender
                                 , profile.age
                                 , profile.loc
@@ -56,6 +57,28 @@ public class ProfileRepositoryImpl implements ProfileRepositoryCustom {
 
     }
 
+
+     @Override
+    public ProfileResponseDto findByUserId(Long id) {
+        return jpaQueryFactory.select(
+                        Projections.bean(
+                                ProfileResponseDto.class
+                                , profile.id
+                                , profile.user
+                                , profile.gender
+                                , profile.age
+                                , profile.loc
+                                , profile.childrenYn
+                                , user.email
+                                , user.role
+                                , user.username
+                        )
+                )
+                .from(profile)
+                .leftJoin(user).on(profile.user.id.eq(user.id))
+                .where(profile.user.id.eq(id)).fetchOne();
+
+    }
     @Override
     public Page<ProfileResponseDto> searchAll(ProfileSearchRequestDto search, Pageable pageable) {
 

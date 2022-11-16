@@ -1,5 +1,6 @@
 package com.server.deeply.profile.repositorty;
 
+import com.server.deeply.profile.dto.ProfileResponseDto;
 import com.server.deeply.profile.dto.ProfileSearchRequestDto;
 import com.server.deeply.profile.jpa.Profile;
 import org.springframework.data.domain.Page;

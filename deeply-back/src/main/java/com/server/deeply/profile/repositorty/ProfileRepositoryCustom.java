@@ -13,6 +13,7 @@ public interface ProfileRepositoryCustom {
     List<Profile> findAll();
 
     ProfileResponseDto findById(Long id);
+    ProfileResponseDto findByUserId(Long userId);
 
     Page<ProfileResponseDto> searchAll(ProfileSearchRequestDto search, Pageable pageable);
 

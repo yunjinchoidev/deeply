@@ -13,7 +13,9 @@ import lombok.NoArgsConstructor;
 public class ProfileRequestDto {
 
     private Long id; // 프로필 아이디
-    private User user; // 유저
+    private Long userId; // 유저 아이디
+    private User user; // 유저 아이디
+
     private String loc; // 사는 곳
     private Integer age; // 나이
     private String phoneNumber; // 휴대폰 번호

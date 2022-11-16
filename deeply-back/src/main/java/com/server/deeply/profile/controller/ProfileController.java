@@ -1,5 +1,6 @@
 package com.server.deeply.profile.controller;
 
+import com.server.deeply.config.security.JwtTokenUtil;
 import com.server.deeply.profile.dto.ProfileRequestDto;
 import com.server.deeply.profile.dto.ProfileResponseDto;
 import com.server.deeply.profile.dto.ProfileSearchRequestDto;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 @RestController
@@ -24,6 +26,7 @@ import java.util.HashMap;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final JwtTokenUtil jwtTokenUtil;
 
     /**
      * 프로필 정보 조회
@@ -36,6 +39,28 @@ public class ProfileController {
                 .build();
         log.info("ProfileService->findProfileById");
         ProfileResponseDto result = profileService.findProfileById(profileRequestDto);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(result);
+    }
+
+       /**
+     * 프로필 정보 조회
+     */
+    @GetMapping("/profile/mine")
+    public ResponseEntity getMineProfile(HttpServletRequest request) {
+        // validation check
+        String token = jwtTokenUtil.parseBearerToken(request);
+        String email = jwtTokenUtil.getEmailFormToken(token);
+        String role = jwtTokenUtil.getRoleFromToken(token);
+        Long userId = jwtTokenUtil.getUserIdFromToken(token);
+        log.info("ProfileService -> findProfile");
+        ProfileRequestDto profileRequestDto = ProfileRequestDto.builder()
+                .userId(userId)
+                .build();
+        log.info("ProfileService->findProfileById");
+        ProfileResponseDto result = profileService.findProfileByUserId(profileRequestDto);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

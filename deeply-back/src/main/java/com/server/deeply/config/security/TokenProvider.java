@@ -58,6 +58,7 @@ public class TokenProvider implements InitializingBean {
         return Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("role",user.getRole())
+                .claim("id",user.getId())
                 .setIssuedAt(now) // 발행시간
                 .signWith(key, SignatureAlgorithm.HS512) // 암호화
                 .setExpiration(validity) // 만료
