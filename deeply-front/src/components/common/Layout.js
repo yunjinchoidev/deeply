@@ -30,7 +30,9 @@ const Layout = () => {
                             <li className="nav-item">
                                 <a className="nav-link" href="/boardList">게시판</a>
                             </li>
-
+                            <li className="nav-item">
+                                <a className="nav-link" href="/matchList">매칭상대</a>
+                            </li>
                         </ul>
                     </div>
                 </nav>

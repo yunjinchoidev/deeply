@@ -11,6 +11,8 @@ import MyPage from "./pages/MyPage";
 import CustomerCenterPage from "./pages/CustomerCenterPage";
 import Home from "./pages/Home";
 import BoardListPage from "./pages/BoardListPage";
+import MatchListPage from "./pages/MatchListPage";
+import ProfilePage from "./pages/ProfilePage";
 
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
                   <Route path="/customercenter" element={<CustomerCenterPage />} />
                   <Route path="/write" element={<WritePage />} />
                   <Route path="/boardList" element={<BoardListPage/>} />
+                  <Route path="/matchList" element={<MatchListPage/>}/>
+                  <Route path="/profile" element={<ProfilePage/>}/>
               </Route>
                   <Route path="/@:username">
                       <Route index element={<PostListPage />} />
