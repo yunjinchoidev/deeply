@@ -4,9 +4,11 @@ import com.server.deeply.file.dto.FileResponseDto;
 import com.server.deeply.file.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,7 @@ public class FileController {
 
     /**
      * 파일 다운로드
+     *
      * @param fileId
      * @return
      * @throws IOException
@@ -40,5 +43,34 @@ public class FileController {
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileResponseDto.getOrigFilename() + "\"")
                 .body(resource);
+    }
+
+
+    /**
+     * 파일 display
+     *
+     * @param fileId
+     * @return
+     * @throws IOException
+     */
+    @GetMapping("/display/{fileId}")
+    public ResponseEntity<Resource> fileDisplay(@PathVariable("fileId") Long fileId) throws IOException {
+        String path = "file:///Users/yunjinchoi/a07_project/deeply/deeply-back/files/";
+        FileResponseDto fileResponseDto = fileService.getFile(fileId);
+        Path paths = Paths.get(fileResponseDto.getFilePath());
+
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        Path filePath = null;
+        Resource resource = new FileSystemResource(paths);
+        try {
+            filePath = Paths.get(fileResponseDto.getFilePath());
+            httpHeaders.add("Content-Type", Files.probeContentType(filePath));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<Resource>(resource, httpHeaders, HttpStatus.OK);
+
+
     }
 }
