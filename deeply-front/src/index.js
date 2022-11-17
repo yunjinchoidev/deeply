@@ -21,7 +21,7 @@ root.render(
         <React.StrictMode>
             <Provider store={createStoreWithMiddleware(Reducers,
                 composeWithDevTools()
-                )}>
+            )}>
                 <App/>
             </Provider>
         </React.StrictMode>

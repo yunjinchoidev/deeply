@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {BOARD_LIST, LOGIN_USER} from "../../actions/types";
 import {boardList, boardListAction} from "../../actions/board_actions";
 import BoardListPage from "../../pages/BoardListPage";
+import {Link} from "react-router-dom";
 
 const BoardTable = () => {
 
@@ -52,6 +53,7 @@ const BoardTable = () => {
     ));
 
     return (
+        <div>
         <Table striped bordered hover>
             <thead>
             <tr>
@@ -63,15 +65,22 @@ const BoardTable = () => {
             </thead>
             <tbody>
             {content}
-
-
-            <tr>
-                <td>3</td>
-                <td colSpan={2}>Larry the Bird</td>
-                <td>@twitter</td>
-            </tr>
             </tbody>
+
         </Table>
+            <nav aria-label="Page navigation example">
+                <ul className="pagination">
+                    <li className="page-item"><a className="page-link" href="#">foremost</a></li>
+                    <li className="page-item"><a className="page-link" href="#">Previous</a></li>
+                    <li className="page-item"><a className="page-link" href="#">1</a></li>
+                    <li className="page-item"><a className="page-link" href="#">2</a></li>
+                    <li className="page-item"><a className="page-link" href="#">3</a></li>
+                    <li className="page-item"><a className="page-link" href="#">Next</a></li>
+                    <li className="page-item"><a className="page-link" href="#">endmost</a></li>
+                </ul>
+            </nav>
+            <Link to="/board/write"><button type="button" className="btn btn-success">글쓰기</button></Link>
+        </div>
     );
 };
 

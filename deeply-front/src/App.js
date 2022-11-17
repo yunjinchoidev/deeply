@@ -1,6 +1,5 @@
 import './App.css';
 import {Route, Routes} from "react-router-dom";
-import PostListPage from "./pages/PostListPage";
 import LoginPage from "./pages/LoginPage";
 import WritePage from "./pages/WritePage";
 import RegisterPage from "./pages/RegisterPage";
@@ -13,6 +12,9 @@ import Home from "./pages/Home";
 import BoardListPage from "./pages/BoardListPage";
 import MatchListPage from "./pages/MatchListPage";
 import ProfilePage from "./pages/ProfilePage";
+import PostListPage from "./pages/PostListPage";
+import PolicyPage from "./pages/PolicyPage";
+import BoardPage from "./pages/BoardPage";
 
 
 function App() {
@@ -27,10 +29,16 @@ function App() {
                   <Route path="/mypage" element={<MyPage />} />
                   <Route path="/customercenter" element={<CustomerCenterPage />} />
                   <Route path="/write" element={<WritePage />} />
-                  <Route path="/boardList" element={<BoardListPage/>} />
+                  {/*<Route path="/boardList" element={<BoardListPage/>} />*/}
                   <Route path="/matchList" element={<MatchListPage/>}/>
                   <Route path="/profile" element={<ProfilePage/>}/>
+                  <Route path="/policy/:detail" element={<PolicyPage/>}/>
+                  <Route path="/board">
+                      <Route index element={<BoardListPage />} />
+                      <Route path=":write" element={<BoardPage />} />
+                  </Route>
               </Route>
+
                   <Route path="/@:username">
                       <Route index element={<PostListPage />} />
                       <Route path=":postId" element={<PostPage />} />
