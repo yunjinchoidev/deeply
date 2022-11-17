@@ -8,6 +8,7 @@ import org.springframework.data.redis.core.RedisHash;
 @Getter
 @RedisHash("RefreshToken")
 public class RefreshRedisToken {
+
     @Id
     private String userId;
     private String token;

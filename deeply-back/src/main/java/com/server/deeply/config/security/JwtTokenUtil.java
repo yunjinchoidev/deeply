@@ -78,25 +78,6 @@ public class JwtTokenUtil implements Serializable {
         return expiration.before(new Date());
     }
 
-    //Jwt 생성.
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        return doGenerateToken(claims, userDetails.getUsername());
-    }
-
-    //Jwt 발급.
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-                .signWith(SignatureAlgorithm.HS512, secret).compact();
-    }
-
-//    // 토큰유효성 + 만료일자 확인.
-//    public Boolean validateToken(String token, UserDetails userDetails) {
-//        final String username = getUsernameFromToken(token);
-//        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-//    }
-
      static public String parseBearerToken(HttpServletRequest request) {
         // Http 리퀘스트의 헤더를 파싱해 Bearer 토큰을 리턴한다.
         String bearerToken = request.getHeader("Authorization");

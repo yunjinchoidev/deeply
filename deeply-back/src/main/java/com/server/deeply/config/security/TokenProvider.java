@@ -1,7 +1,9 @@
 package com.server.deeply.config.security;
 
+import com.server.deeply.config.redis.RefreshRedisRepository;
 import com.server.deeply.user.jpa.User;
 import com.server.deeply.user.repository.UserRepository;
+import com.server.deeply.user.service.UserServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.security.Key;
 import java.security.SecureRandom;
 import java.time.Instant;
@@ -33,7 +36,7 @@ public class TokenProvider implements InitializingBean {
     private final long refreshTokenValidityInMs = 604800;
     private final long tokenValidityInMs = 604800;
     private final UserRepository userRepository;
-
+    private final RefreshRedisRepository refreshRedisRepository;
     private UserDetailsService userDetailsService;
 
     private Key key;
@@ -62,6 +65,36 @@ public class TokenProvider implements InitializingBean {
                 .setIssuedAt(now) // 발행시간
                 .signWith(key, SignatureAlgorithm.HS512) // 암호화
                 .setExpiration(validity) // 만료
+                .compact();
+    }
+
+
+//        public String createAccessToken2(String username) {
+//            Date now = new Date();
+//        Date validity = new Date(now.getTime() + tokenValidityInMs);
+//        User user = userRepository.findUserByEmail(authentication.getName()).get();
+//        return Jwts.builder()
+//                .setSubject(authentication.getName())
+//                .claim("role",user.getRole())
+//                .claim("id",user.getId())
+//                .setIssuedAt(now) // 발행시간
+//                .signWith(key, SignatureAlgorithm.HS512) // 암호화
+//                .setExpiration(validity) // 만료
+//                .compact();
+//    }
+
+
+        public String createRefreshToken(Authentication authentication) {
+        Date now = new Date();
+        Date validity = new Date(now.getTime() + refreshTokenValidityInMs);
+        User user = userRepository.findUserByEmail(authentication.getName()).get();
+        return Jwts.builder()
+                .setSubject(authentication.getName())
+                 .claim("role",user.getRole())
+                .claim("id",user.getId())
+                .setIssuedAt(now)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(validity)
                 .compact();
     }
 
@@ -130,17 +163,7 @@ public class TokenProvider implements InitializingBean {
         return false;
     }
 
-    public String createRefreshToken(Authentication authentication) {
-        Date now = new Date();
-        Date validity = new Date(now.getTime() + refreshTokenValidityInMs);
 
-        return Jwts.builder()
-                .setSubject(authentication.getName())
-                .setIssuedAt(now)
-                .signWith(key, SignatureAlgorithm.HS512)
-                .setExpiration(validity)
-                .compact();
-    }
 
      public Long getExpiration(String accessToken) {
         // accessToken 남은 유효시간
@@ -149,6 +172,24 @@ public class TokenProvider implements InitializingBean {
         Long now = new Date().getTime();
         return (expiration.getTime() - now);
     }
+
+     // RefreshToken 존재유무 확인
+    public boolean existsRefreshToken(String refreshToken) {
+        return refreshRedisRepository.existsByRefreshToken(refreshToken);
+    }
+
+
+
+    // 어세스 토큰 헤더 설정
+    public void setHeaderAccessToken(HttpServletResponse response, String accessToken) {
+        response.setHeader("authorization", "bearer "+ accessToken);
+    }
+
+    // 리프레시 토큰 헤더 설정
+    public void setHeaderRefreshToken(HttpServletResponse response, String refreshToken) {
+        response.setHeader("refreshToken", "bearer "+ refreshToken);
+    }
+
 
 }
 
