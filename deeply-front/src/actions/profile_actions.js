@@ -43,7 +43,6 @@ export function findProfile(dataToSubmit) {
     }
 }
 
-
 export function myProfile() {
     let accessToken = "Bearer " + localStorage.getItem("accessToken");
     axios.defaults.headers.common['Authorization'] = accessToken

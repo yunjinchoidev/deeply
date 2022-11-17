@@ -9,6 +9,7 @@ const LoginForm = (props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [passwordConfirm, setPasswordConfirm] = useState("");
+    const [file, setFile] = useState("");
     const [username, setUsername] = useState("");
 
     const dispatch = useDispatch()
@@ -62,7 +63,28 @@ useEffect(() => {
     console.log("LoginPage render ... ");
 })
 
-return (
+        const [userImage,setUserImage] = useState("");
+        const [fileImage,setFileImage] = useState("");
+        const handleChangeFile =(e)=>{
+            let reader = new FileReader();
+            console.log(e)
+            if (e.target.files[0]){
+                reader.readAsDataURL(e.target.files[0]);
+            }
+            reader.onloadend = () =>{
+                const resultImage = reader.result;
+                console.log(resultImage)
+                setFileImage(URL.createObjectURL(e.target.files[0]));
+                setUserImage(resultImage)
+
+            };
+
+
+        }
+
+
+
+        return (
     <Form>
         <Form.Group className="mb-3" controlId="formBasicEmailRegister">
             <Form.Label>Email address</Form.Label>
@@ -106,6 +128,20 @@ return (
             />
         </Form.Group>
 
+
+        <Form.Group className="mb-3" controlId="formBasicFileRegister">
+            <Form.Label>파일</Form.Label>
+            <Form.Control type="file"
+                          placeholder="file"
+                          onChange={handleChangeFile}
+            />
+        </Form.Group>
+
+        <img
+            alt="sample"
+            src={fileImage}
+            style={{ margin: "auto" }}
+        />
 
         <Form.Group className="mb-3" controlId="formBasicCheckboxRegister">
             <Form.Check type="checkbox" label="Check me out"/>
