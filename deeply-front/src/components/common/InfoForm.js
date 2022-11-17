@@ -59,6 +59,7 @@ const InfoForm = () => {
                 <Card.Link href="#">Another Link</Card.Link>
             </Card.Body>
         </Card>
+
     );
 };
 
