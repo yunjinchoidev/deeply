@@ -2,7 +2,7 @@ server:
   port: 9000
 
 sample:
-  value: local
+  value: dev
 
 spring:
 
