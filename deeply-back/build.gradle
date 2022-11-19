@@ -128,6 +128,9 @@ dependencies {
 
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.2'
 
+    // liquibase
+	implementation 'org.liquibase:liquibase-core'
+
 }
 
 tasks.named('test') {
@@ -158,3 +161,5 @@ configurations {
     }
     querydsl.extendsFrom compileClasspath
 }
+
+
