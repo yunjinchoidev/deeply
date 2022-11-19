@@ -1,0 +1,53 @@
+#version: "3"
+#services:
+#  database:
+#    image: mariadb
+#    environment:
+#      MYSQL_DATABASE: userdb
+#      MYSQL_USER: user
+#      MYSQL_PASSWORD: userpwd
+#      MYSQL_ROOT_HOST: '%'
+#      MYSQL_ROOT_PASSWORD: rootpwd
+#    volumes:
+#      - ./db/data:/var/lib/mariadb
+#    ports:
+#      - 3306:3306
+#    restart: always
+#  application:
+#    build: .
+#    depends_on:
+#      - database
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mariadb://localhost:3306/userdb
+#      SPRING_DATASOURCE_USERNAME: user
+#      SPRING_DATASOURCE_PASSWORD: userpwd
+#    restart: always
+
+
+version: "3.2"
+services:
+  database:
+    container_name: database
+    image: mariadb
+    volumes:
+      - ~/docker/mariadb/etc/mysql/conf.d:/etc/mysql/conf.d:ro
+      - ~/docker/mariadb/var/lib/mysql:/var/lib/mysql
+      - ~/docker/mariadb/var/log/maria:/var/log/maria
+    environment:
+      - MYSQL_DATABASE=database_name
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_ROOT_HOST=%
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    ports:
+      - 3306:3306
+
+  application:
+    build: .
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://database:3306/database_name?useUnicode=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    ports:
+      - 9000:9000
+    depends_on:
+      - database
