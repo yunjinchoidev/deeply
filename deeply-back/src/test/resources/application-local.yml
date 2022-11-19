@@ -1,29 +1,72 @@
 server:
   port: 9000
 
+sample:
+  value: local
+
 spring:
+#  config:
+#    activate:
+#      on-profile: dev
+
 #  datasource:
-#    url: jdbc:h2:mem:test
+#    url: jdbc:h2:tcp://localhost/~/deeply
 #    driver-class-name: org.h2.Driver
 #    username: sa
-#    password: 1111
-#
-#  jpa:
-#    hibernate:
-#      ddl-auto: create-drop
-#    properties:
-#      hibernate:
-#        show_sql: true
-#        format_sql: true
+#    password: root
 
-  devtools:
-    livereload:
-      enabled: true
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+#    url: jdbc:mariadb://mydb3:3306/deeply
+#    username: root
+#    password: root
+    url: jdbc:mariadb://localhost:3306/database_name?useUnicode=true
+    username: root
+    password: 1234
 
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 1000 #최적화 옵션
+    open-in-view: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
+
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
   redis:
     port: 6379
     host: localhost
+
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: group-id-oing
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
 logging:
   level:
     org.hibernate.sql: debug
     org.hibernate.type: trace
+
+jwt:
+  header: Authorization
+  secret: dfasdfas
+  access-token-validity-in-seconds: 1800 # 초 단위
+  refresh-token-validity-in-seconds: 604800
