@@ -26,7 +26,8 @@ public class UserRequestDto {
     private Integer page;
     private Integer pageSize;
     private String  orderBy;
-
+  private String provider;
+    private String providerId;
 
     @Builder.Default
     private Integer createId = null; // 생성자 ID

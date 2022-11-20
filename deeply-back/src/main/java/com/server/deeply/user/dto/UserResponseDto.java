@@ -24,6 +24,8 @@ public class UserResponseDto {
 
     private Boolean isAdmin;
     private Boolean isAuth;
+  private String provider;
+    private String providerId;
 
     @Builder.Default
     private Integer createId = null; // 생성자 ID

@@ -15,6 +15,10 @@ public class UserDto {
     private String username;
     private String roles;
     private String fcmToken;
+
+      private String provider;
+    private String providerId;
+
     @Builder.Default
     private Integer createId = null; // 생성자 ID
 

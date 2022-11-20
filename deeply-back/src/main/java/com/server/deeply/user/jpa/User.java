@@ -49,6 +49,10 @@ public class User extends BaseEntity implements UserDetails, CredentialsContaine
     @Column(name = "fcm_token")
     private String fcmToken;
 
+    private String provider;
+    private String providerId;
+
+
 
 
     public List<String> getRoleList() {
