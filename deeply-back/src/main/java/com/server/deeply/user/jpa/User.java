@@ -1,15 +1,21 @@
 package com.server.deeply.user.jpa;
 
 import com.server.deeply.common.BaseEntity;
+import com.server.deeply.user.dto.UserRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.ObjectUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -25,6 +31,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "user")
+@DynamicUpdate
+@DynamicInsert
+@Document(indexName = "users")
 public class User extends BaseEntity implements UserDetails, CredentialsContainer {
 
     @Id
@@ -36,6 +45,9 @@ public class User extends BaseEntity implements UserDetails, CredentialsContaine
     private String password; // 비밀번호
     private String role; // 권한
     private String username; // 이름
+
+    @Column(name = "fcm_token")
+    private String fcmToken;
 
 
 
@@ -82,5 +94,19 @@ public class User extends BaseEntity implements UserDetails, CredentialsContaine
     public void eraseCredentials() {
 
     }
+
+
+     public void updateInfo(UserRequestDto requestDto) {
+        if (ObjectUtils.isEmpty(requestDto))
+            throw new IllegalArgumentException("요청 파라미터가 NULL입니다.");
+
+        this.username = requestDto.getUsername();
+        this.email = requestDto.getEmail();
+        this.password = requestDto.getPassword();
+        this.role = requestDto.getRole();
+        this.fcmToken = requestDto.getFcmToken();
+    }
+
+
 }
 

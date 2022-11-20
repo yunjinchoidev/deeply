@@ -6,7 +6,6 @@ import com.server.deeply.config.security.JwtTokenUtil;
 import com.server.deeply.config.security.TokenProvider;
 import com.server.deeply.user.dto.UserRequestDto;
 import com.server.deeply.user.dto.UserResponseDto;
-import com.server.deeply.user.jpa.User;
 import com.server.deeply.user.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +18,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 
 
 @RestController
@@ -61,6 +59,7 @@ public class SignController {
 
         // 로그인 성공
         if (userResponseDto != null) {
+//            fcmService.saveToken(userDTO);
             return ResponseEntity.ok().body(userResponseDto);
 
             // 로그인 실패
@@ -82,6 +81,8 @@ public class SignController {
             return response.invalidFields(Helper.refineErrors(errors));
         }
         ResponseEntity<?> result = userService.logout(logout);
+
+
         return result;
     }
 

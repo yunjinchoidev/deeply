@@ -160,6 +160,7 @@ public class UserServiceImpl implements UserDetailsService {
                 userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
 
         // refresh token 발급 및 저장
+        log.info("tokenProvider -> createRefreshToken");
         String refreshToken = tokenProvider.createRefreshToken(authentication);
 //        RefreshRedisToken token = RefreshRedisToken.createToken(email, refreshToken);
 

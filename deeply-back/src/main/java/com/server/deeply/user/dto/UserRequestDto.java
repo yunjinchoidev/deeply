@@ -16,7 +16,7 @@ public class UserRequestDto {
     private String email;
     private String password;
     private String encodedPassword;
-
+    private String fcmToken;
     private String username;
     private String role;
 

@@ -17,7 +17,7 @@ public class UserResponseDto {
 
     private String username;
     private String role;
-
+    private String fcmToken;
     private String accessToken;
     private String refreshToken;
     private String error;
@@ -33,4 +33,8 @@ public class UserResponseDto {
     private Integer updateId = null; // 수정자 ID
     @Builder.Default
     private LocalDateTime updateDt = null; // 수정일시
+
+    public void from(){
+
+    }
 }
