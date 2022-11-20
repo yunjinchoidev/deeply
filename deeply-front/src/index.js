@@ -19,9 +19,7 @@ const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)
 root.render(
     <BrowserRouter>
         <React.StrictMode>
-            <Provider store={createStoreWithMiddleware(Reducers,
-                composeWithDevTools()
-            )}>
+            <Provider store={createStoreWithMiddleware(Reducers, composeWithDevTools())}>
                 <App/>
             </Provider>
         </React.StrictMode>
