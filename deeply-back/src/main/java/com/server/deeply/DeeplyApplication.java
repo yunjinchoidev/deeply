@@ -16,8 +16,4 @@ public class DeeplyApplication {
     public static void main(String[] args) {
         SpringApplication.run(DeeplyApplication.class, args);
     }
-   @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
 }
