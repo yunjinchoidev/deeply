@@ -10,7 +10,6 @@ const Layout = () => {
                     <ul className="navbar-nav">
                         <li className="nav-item active"><a className="nav-link" href="/">홈</a></li>
                         <li className="nav-item"><a className="nav-link" href="/login">로그인</a></li>
-                        <li className="nav-item"><a className="nav-link" href="/sociallogin">소셜로그인</a></li>
                         <li className="nav-item"><a className="nav-link" href="/logout">로그아웃</a></li>
                         <li className="nav-item"><a className="nav-link" href="/register">회원가입</a></li>
                         <li className="nav-item"><a className="nav-link" href="/mypage">마이페이지</a></li>

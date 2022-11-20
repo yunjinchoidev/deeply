@@ -15,6 +15,9 @@ import ProfilePage from "./pages/ProfilePage";
 import PostListPage from "./pages/PostListPage";
 import PolicyPage from "./pages/PolicyPage";
 import BoardPage from "./pages/BoardPage";
+import AdminPage from "./pages/AdminPage";
+import AdminLayout from "./components/common/AdminLayout";
+import SocialLoginPage from "./pages/SocialLoginPage";
 
 
 function App() {
@@ -24,6 +27,7 @@ function App() {
               <Route element={<Layout/>}>
                   <Route path="/" element={<Home />} />
                   <Route path="/login" element={<LoginPage />} />
+                  <Route path="/sociallogin" element={<SocialLoginPage />} />
                   <Route path="/logout" element={<LogoutPage />} />
                   <Route path="/register" element={<RegisterPage />} />
                   <Route path="/mypage" element={<MyPage />} />
@@ -32,7 +36,10 @@ function App() {
                   {/*<Route path="/boardList" element={<BoardListPage/>} />*/}
                   <Route path="/matchList" element={<MatchListPage/>}/>
                   <Route path="/profile" element={<ProfilePage/>}/>
-                  <Route path="/policy/:detail" element={<PolicyPage/>}/>
+                  <Route path="/policy" element={<PolicyPage/>}/>
+                  <Route element={<AdminLayout/>}>
+                      <Route path="/admin" element={<AdminPage/>}/>
+                  </Route>
                   <Route path="/board">
                       <Route index element={<BoardListPage />} />
                       <Route path=":write" element={<BoardPage />} />
