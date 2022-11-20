@@ -134,7 +134,14 @@ dependencies {
     // smtp
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+    // fcm
+    implementation 'com.google.firebase:firebase-admin:7.1.1'
+
+    // elasticsearch
+      implementation 'org.springframework.data:spring-data-elasticsearch'
 }
+
+
 
 tasks.named('test') {
     useJUnitPlatform()
