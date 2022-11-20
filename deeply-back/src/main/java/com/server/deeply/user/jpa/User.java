@@ -50,7 +50,9 @@ public class User extends BaseEntity implements UserDetails, CredentialsContaine
     private String fcmToken;
 
     private String provider;
-    private String providerId;
+
+    @Column(name = "provider_id")
+    private Integer providerId;
 
 
 

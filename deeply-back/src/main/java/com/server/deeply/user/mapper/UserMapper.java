@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-//    @Mapping(source = "encodedPassword", target = "password")
+    @Mapping(source = "encodedPassword", target = "password")
     User toEntity(UserRequestDto userRequestDto);
     UserResponseDto toDto(User user);
     List<UserResponseDto> toDtoList(List<User> users);
