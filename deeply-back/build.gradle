@@ -136,16 +136,17 @@ dependencies {
 
     // fcm
     implementation 'com.google.firebase:firebase-admin:7.1.1'
+    implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.0.0'
 
     // elasticsearch
-      implementation 'org.springframework.data:spring-data-elasticsearch'
+    implementation 'org.springframework.data:spring-data-elasticsearch'
+
+    // oauth 2
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
 }
 
 
-
-tasks.named('test') {
-    useJUnitPlatform()
-}
 /*
  * queryDSL 설정 추가
  */
