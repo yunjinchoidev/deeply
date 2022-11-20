@@ -26,3 +26,7 @@ hs_err_pid*
 *.sdi
 
 *.yml
+application.yml
+application-local.yml
+application-dev.yml
+application-prod.yml
