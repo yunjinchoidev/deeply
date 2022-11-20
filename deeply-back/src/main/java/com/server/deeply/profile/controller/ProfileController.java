@@ -1,5 +1,6 @@
 package com.server.deeply.profile.controller;
 
+import com.server.deeply.board.dto.BoardRequestDto;
 import com.server.deeply.config.security.JwtTokenUtil;
 import com.server.deeply.profile.dto.ProfileRequestDto;
 import com.server.deeply.profile.dto.ProfileResponseDto;
@@ -7,6 +8,7 @@ import com.server.deeply.profile.dto.ProfileSearchRequestDto;
 import com.server.deeply.profile.service.ProfileService;
 import com.server.deeply.user.dto.UserRequestDto;
 import com.server.deeply.user.dto.UserResponseDto;
+import com.server.deeply.user.jpa.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -15,6 +17,7 @@ import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -45,7 +48,7 @@ public class ProfileController {
                 .body(result);
     }
 
-       /**
+    /**
      * 프로필 정보 조회
      */
     @GetMapping("/profile/mine")
@@ -57,7 +60,7 @@ public class ProfileController {
         Long userId = jwtTokenUtil.getUserIdFromToken(token);
         log.info("ProfileService -> findProfile");
         ProfileRequestDto profileRequestDto = ProfileRequestDto.builder()
-                .userId(userId)
+                .user(User.builder().id(userId).build())
                 .build();
         log.info("ProfileService->findProfileById");
         ProfileResponseDto result = profileService.findProfileByUserId(profileRequestDto);
@@ -83,30 +86,18 @@ public class ProfileController {
      * 프로필 정보 수정
      */
     @PutMapping("/profile")
-    public ResponseEntity updateProfile(@RequestBody ProfileRequestDto param) {
+    public ResponseEntity updateProfile(
+                @RequestParam("file") MultipartFile files,
+                @RequestPart ProfileRequestDto param) {
+        param.setMultipartFile(files);
         log.info("ProfileService->saveProfile");
         Long profileId = profileService.saveProfile(param);
-        HashMap<String,Long> result = new HashMap<>();
+        HashMap<String, Long> result = new HashMap<>();
         result.put("profileId", profileId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(result);
     }
-
-
-// /**
-//     * 프로필 정보 저장
-//     */
-//    @PostMapping("/profile")
-//    public ResponseEntity saveProfile(@RequestBody ProfileRequestDto param) {
-//        log.info("ProfileService->saveProfile");
-//        Long profileId = profileService.saveProfile(param);
-//        HashMap<String,Long> result = new HashMap<>();
-//        result.put("profileId", profileId);
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(result);
-//    }
 
 
 }

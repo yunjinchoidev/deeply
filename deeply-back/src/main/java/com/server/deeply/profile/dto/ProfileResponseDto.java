@@ -1,8 +1,13 @@
 package com.server.deeply.profile.dto;
 
+import com.server.deeply.file.dto.FileResponseDto;
+import com.server.deeply.file.jpa.File;
 import com.server.deeply.profile.jpa.Profile;
 import com.server.deeply.user.jpa.User;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Getter
@@ -23,5 +28,7 @@ public class ProfileResponseDto {
     private String email;
     private String username;
     private String role;
+
+    private File file;
 
 }

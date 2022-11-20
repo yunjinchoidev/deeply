@@ -1,8 +1,6 @@
 package com.server.deeply.profile.repositorty;
 
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.deeply.profile.dto.ProfileResponseDto;
 import com.server.deeply.profile.dto.ProfileSearchRequestDto;
@@ -12,10 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.ObjectUtils;
-
 import java.util.List;
-
 import static com.server.deeply.profile.jpa.QProfile.profile;
 import static com.server.deeply.user.jpa.QUser.user;
 
@@ -41,20 +36,19 @@ public class ProfileRepositoryImpl implements ProfileRepositoryCustom {
                         Projections.bean(
                                 ProfileResponseDto.class
                                 , profile.id
-                                , profile.user
+                                , profile.user.id
+                                , profile.user.email
                                 , profile.gender
                                 , profile.age
                                 , profile.loc
                                 , profile.childrenYn
-                                , user.email
-                                , user.role
-                                , user.username
+                                , profile.money
+                                , profile.phoneNumber
+                                , profile.file
                         )
                 )
                 .from(profile)
-                .leftJoin(user).on(profile.user.id.eq(user.id))
                 .where(profile.id.eq(id)).fetchOne();
-
     }
 
 
@@ -64,18 +58,18 @@ public class ProfileRepositoryImpl implements ProfileRepositoryCustom {
                         Projections.bean(
                                 ProfileResponseDto.class
                                 , profile.id
-                                , profile.user
                                 , profile.gender
                                 , profile.age
                                 , profile.loc
                                 , profile.childrenYn
-                                , user.email
-                                , user.role
-                                , user.username
+                                , profile.money
+                                , profile.phoneNumber
+                                , profile.file
+                                , profile.user.email
+                                , profile.user.role
                         )
                 )
                 .from(profile)
-                .leftJoin(user).on(profile.user.id.eq(user.id))
                 .where(profile.user.id.eq(id)).fetchOne();
 
     }
@@ -90,6 +84,8 @@ public class ProfileRepositoryImpl implements ProfileRepositoryCustom {
                                 , profile.age
                                 , profile.loc
                                 , profile.childrenYn
+                                , profile.money
+                                , profile.phoneNumber
                                 , user.email
                                 , user.role
                                 , user.username
