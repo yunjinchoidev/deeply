@@ -162,10 +162,10 @@ public class UserServiceImpl implements UserDetailsService {
         // refresh token 발급 및 저장
         log.info("tokenProvider -> createRefreshToken");
         String refreshToken = tokenProvider.createRefreshToken(authentication);
-//        RefreshRedisToken token = RefreshRedisToken.createToken(email, refreshToken);
+        RefreshRedisToken token = RefreshRedisToken.createToken(email, refreshToken);
 
         // 기존 토큰이 있으면 수정, 없으면 생성
-//        refreshRedisRepository.save(token);
+        refreshRedisRepository.save(token);
         redisTemplate.opsForValue()
                 .set("RT:" + authentication.getName(), refreshToken, 604800, TimeUnit.MILLISECONDS);
 
@@ -178,7 +178,7 @@ public class UserServiceImpl implements UserDetailsService {
                 .username(originalUser.getUsername())
                 .role(originalUser.getRole())
                 .accessToken(tokenProvider.createAccessToken(authentication))
-                .refreshToken(refreshToken)
+//                .refreshToken(refreshToken)
                 .build();
         return responseUserDTO;
     }

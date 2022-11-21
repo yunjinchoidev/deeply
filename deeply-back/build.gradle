@@ -16,22 +16,27 @@ plugins {
 ext {
     snippetsDir = file('build/generated-snippets')
 }
-asciidoctor {
-    dependsOn test
-    inputs.dir snippetsDir
+//asciidoctor {
+//    dependsOn test
+//    inputs.dir snippetsDir
+//}
+//
+//asciidoctor.doFirst {
+//    delete file('src/main/resources/static/docs')
+//}
+//
+//bootJar {
+//    dependsOn asciidoctor
+//    copy {
+//        from "${asciidoctor.outputDir}"
+//        into 'BOOT-INF/classes/static/docs'
+//    }
+//}
+
+jar {
+    enabled = false
 }
 
-asciidoctor.doFirst {
-    delete file('src/main/resources/static/docs')
-}
-
-bootJar {
-    dependsOn asciidoctor
-    copy {
-        from "${asciidoctor.outputDir}"
-        into 'BOOT-INF/classes/static/docs'
-    }
-}
 
 task copyDocument(type: Copy) {
     dependsOn asciidoctor

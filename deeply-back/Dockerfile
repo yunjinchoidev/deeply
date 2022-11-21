@@ -20,4 +20,4 @@
 
 FROM adoptopenjdk/openjdk11
 COPY build/libs/deeply-0.0.1-SNAPSHOT.jar dockerservice.jar
-ENTRYPOINT ["java","-jar","/dockerservice.jar"]
+ENTRYPOINT ["java","-jar","/dockerservice.jar", "--spring.profiles.active=prod"]

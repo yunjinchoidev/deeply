@@ -47,8 +47,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String refreshToken = resolveRefreshToken(request);
             log.info("Filter is running...");
             // 토큰 검사하기. JWT이므로 인가 서버에 요청 하지 않고도 검증 가능.
+            log.info("if (token != null && !token.equalsIgnoreCase(\"null\")) {\n");
             if (token != null && !token.equalsIgnoreCase("null")) {
+                log.info("레디스 접근, 로그아웃 토큰 조회");
                 String isLogout = (String) redisTemplate.opsForValue().get(token);
+                log.info("레디스 종료, 로그아웃 토큰 조회");
                 if (ObjectUtils.isEmpty(isLogout)) {
                     // userId 가져오기. 위조 된 경우 예외 처리 된다.
                     //                    boolean validateToken = tokenProvider.validateToken(token);
