@@ -14,11 +14,17 @@ const Layout = () => {
                         <li className="nav-item"><a className="nav-link" href="/logout">로그아웃</a></li>
                         <li className="nav-item"><a className="nav-link" href="/register">회원가입</a></li>
                         <li className="nav-item"><a className="nav-link" href="/mypage">마이페이지</a></li>
+                        <li className="nav-item"><a className="nav-link" href="/MyFeedPage.js">나의피드</a></li>
                         <li className="nav-item"><a className="nav-link" href="/customercenter">고객센터</a></li>
                         <li className="nav-item"><a className="nav-link" href="/board">게시판</a></li>
                         <li className="nav-item"><a className="nav-link" href="/matchList">매칭상대</a></li>
                         <li className="nav-item"><a className="nav-link" href="/policy">정책</a></li>
                         <li className="nav-item"><a className="nav-link" href="/admin">관리자페이지</a></li>
+                        <li className="nav-item"><a className="nav-link" href="/notice">공지사항</a></li>
+                        <li className="nav-item"><a className="nav-link" href="/basket">장바구니</a></li>
+                        <li className="nav-item"><a className="nav-link" href="/order">주문하기</a></li>
+                        <li className="nav-item"><a className="nav-link" href="/mapservice">지도 매칭 서비스</a></li>
+                        <li className="nav-item"><a className="nav-link" href="/chat">채팅 서비스</a></li>
                     </ul>
                 </div>
             </nav>
