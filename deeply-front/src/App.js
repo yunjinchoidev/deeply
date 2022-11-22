@@ -18,6 +18,12 @@ import BoardPage from "./pages/BoardPage";
 import AdminPage from "./pages/AdminPage";
 import AdminLayout from "./components/common/AdminLayout";
 import SocialLoginPage from "./pages/SocialLoginPage";
+import MyFeedPage from "./pages/MyFeedPage";
+import NoticePage from "./pages/NoticePage";
+import BasketPage from "./pages/BasketPage";
+import OrderPage from "./pages/OrderPage";
+import MapServicePage from "./pages/MapServicePage";
+import ChatPage from "./pages/ChatPage";
 
 
 function App() {
@@ -31,12 +37,19 @@ function App() {
                   <Route path="/logout" element={<LogoutPage />} />
                   <Route path="/register" element={<RegisterPage />} />
                   <Route path="/mypage" element={<MyPage />} />
+                  <Route path="/myfeed" element={<MyFeedPage />} />
                   <Route path="/customercenter" element={<CustomerCenterPage />} />
                   <Route path="/write" element={<WritePage />} />
-                  {/*<Route path="/boardList" element={<BoardListPage/>} />*/}
+                  <Route path="/boardList" element={<BoardListPage/>} />
+                  <Route path="/notice" element={<NoticePage/>} />
+                  <Route path="/basket" element={<BasketPage/>} />
+                  <Route path="/order" element={<OrderPage/>} />
                   <Route path="/matchList" element={<MatchListPage/>}/>
                   <Route path="/profile" element={<ProfilePage/>}/>
                   <Route path="/policy" element={<PolicyPage/>}/>
+                  <Route path="/mapservice" element={<MapServicePage/>}/>
+                  <Route path="/chat" element={<ChatPage/>}/>
+
                   <Route element={<AdminLayout/>}>
                       <Route path="/admin" element={<AdminPage/>}/>
                   </Route>
