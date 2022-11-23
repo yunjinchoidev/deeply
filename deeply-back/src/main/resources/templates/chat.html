@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script th:inline="javascript">
+
+            $(document).ready(function(){
+
+
+            $("#button-send").on("click", (e) => {
+                send();
+            });
+const websocket = new WebSocket('ws://localhost:9000/ws/chat');
+
+            websocket.onmessage = onMessage;
+            websocket.onopen = onOpen;
+            websocket.onclose = onClose;
+
+            function send(){
+
+                let msg = document.getElementById("msg");
+
+                msg.value = '';
+            }
+
+            //채팅창에서 나갔을 때
+            function onClose(evt) {
+                websocket.send("G");
+            }
+
+            //채팅창에 들어왔을 때
+            function onOpen(evt) {
+                websocket.send("G");
+            }
+
+            function onMessage(msg) {
+                var data = msg.data;
+                var sessionId = null;
+                //데이터를 보낸 사람
+                var message = null;
+                var arr = data.split(":");
+
+                for(var i=0; i<arr.length; i++){
+                    console.log('arr[' + i + ']: ' + arr[i]);
+                }
+
+
+                //현재 세션에 로그인 한 사람
+                sessionId = arr[0];
+                message = arr[1];
+
+                console.log("sessionID : " + sessionId);
+
+
+            }
+            })
+</script>
+            <div class="col-6">
+                <label><b>채팅방</b></label>
+            </div>
+            <div>
+                <div id="msgArea" class="col"></div>
+                <div class="col-6">
+                    <div class="input-group mb-3">
+                        <input type="text" id="msg" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" id="button-send">전송</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+</html>

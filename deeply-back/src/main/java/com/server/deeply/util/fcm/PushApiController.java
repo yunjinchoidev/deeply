@@ -1,7 +1,6 @@
 package com.server.deeply.util.fcm;
 
-import liquibase.pro.packaged.S;
-import lombok.Data;
+₩import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

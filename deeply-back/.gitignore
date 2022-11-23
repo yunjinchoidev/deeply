@@ -39,5 +39,13 @@ src/test/resources/application-local.yml
 src/test/resources/application-dev.yml
 src/test/resources/application-prod.yml
 
+docker-compose-local.yml
+docker-compose-dev.yml
+docker-compose-kafka.yml
+docker-compose-prod.yml
+Dockerfile-dev
+Dockerfile-local
+Dockerfile-prod
+
 src/main/resources/firebase/deeply-firebase.json
 src/main/resources/oauth/google/client_secret_801697074418-rk1q2db02j7c13q9gefgfmmi4rngfstb.apps.googleusercontent.com.json

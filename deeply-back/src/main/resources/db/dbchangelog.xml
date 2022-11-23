@@ -6,9 +6,10 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <include file="scripts/v_0.0.1_user.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/v_0.0.2_user.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/v_0.0.3_user.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/v_0.0.4_user.sql" relativeToChangelogFile="true"/>
+<!--    <include file="scripts/v_0.0.1_user.sql" relativeToChangelogFile="true"/>-->
+<!--    <include file="scripts/v_0.0.2_user.sql" relativeToChangelogFile="true"/>-->
+<!--    <include file="scripts/v_0.0.3_user.sql" relativeToChangelogFile="true"/>-->
+<!--    <include file="scripts/v_0.0.4_user.sql" relativeToChangelogFile="true"/>-->
+<!--    <include file="scripts/v_0.0.1_matching.sql" relativeToChangelogFile="true"/>-->
 
 </databaseChangeLog>
