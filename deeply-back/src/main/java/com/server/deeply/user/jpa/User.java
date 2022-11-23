@@ -10,7 +10,6 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,7 +32,6 @@ import java.util.List;
 @Table(name = "user")
 @DynamicUpdate
 @DynamicInsert
-@Document(indexName = "users")
 public class User extends BaseEntity implements UserDetails, CredentialsContainer {
 
     @Id

@@ -28,8 +28,7 @@ public class Profile extends BaseEntity {
     @Column(name = "profile_id")
     private Long id = null; // 프로필 아이디
 
-    @OneToOne(fetch = FetchType.LAZY,
-            optional = false)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user = null;   // 유저 아이디
 
@@ -40,8 +39,7 @@ public class Profile extends BaseEntity {
     private Integer money = null; // 자산
     private String childrenYn = null; // 자녀유무
 
-    @OneToOne(fetch = FetchType.LAZY,
-            optional = false)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "file_id")
     private File file = null;
 

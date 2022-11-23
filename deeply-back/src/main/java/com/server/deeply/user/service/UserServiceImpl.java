@@ -80,11 +80,11 @@ public class UserServiceImpl implements UserDetailsService {
         User user = UserMapper.INSTANCE.toEntity(param);
 
         User saveUser = userRepository.save(user);
-        ProfileRequestDto profileRequestDto
-                = ProfileRequestDto.builder().user(saveUser).build();
+//        ProfileRequestDto profileRequestDto
+//                = ProfileRequestDto.builder().user(saveUser).build();
 
         // 프로필 정보도 같이 저장해주도록 한다.
-        profileService.saveProfile(profileRequestDto);
+//        profileService.saveProfile(profileRequestDto);
 
         return saveUser.getId();
     }
