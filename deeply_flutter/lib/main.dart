@@ -1,38 +1,34 @@
+import 'dart:io';
+
+import 'package:deeply_flutter/landingpage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 
-void main() => runApp(MyApp());
+void main() {
+  HttpOverrides.global = MyHttpOverrides();
+  runApp(Myapp());
+}
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Myapp extends StatelessWidget {
+
+  const Myapp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-
-      home: MaterialFlutterApp(),
+    return GetMaterialApp(
+      theme: ThemeData(fontFamily: 'bamin'),
+      home: LandingPage(),
     );
   }
 }
 
-class MaterialFlutterApp extends StatefulWidget {
-  const MaterialFlutterApp({Key? key}) : super(key: key);
 
+class MyHttpOverrides extends HttpOverrides {
   @override
-  State<MaterialFlutterApp> createState() => _MaterialFlutterAppState();
-}
-
-
-
-
-
-class _MaterialFlutterAppState extends State<MaterialFlutterApp> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Deeply'),),
-      // floatingActionButton: FloatingActionButton(child: Icon(Icon)),
-
-    );
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }
