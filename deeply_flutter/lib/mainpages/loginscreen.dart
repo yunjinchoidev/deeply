@@ -21,7 +21,34 @@ class LoginApp extends StatefulWidget {
   State<LoginApp> createState() => _LoginAppState();
 }
 
+
+
 class _LoginAppState extends State<LoginApp> {
+
+  void _showDialog(String text, String contents) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0)
+          ),
+          title: new Text(text),
+          content: SingleChildScrollView(child:new Text(contents)),
+          actions: <Widget>[
+            new TextButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _callAPI() async {
     var url = Uri.parse(
       'http://localhost:9000/auth/signin',
@@ -45,7 +72,7 @@ class _LoginAppState extends State<LoginApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login Page'),
+        title: Text('로그인'),
       ),
       body: SingleChildScrollView(
         // height: 150.0,
@@ -106,8 +133,9 @@ class _LoginAppState extends State<LoginApp> {
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: TextButton(
                 onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => MainPage()));
+                  _showDialog("로그인 성공", "성공");
+                  // Navigator.push(
+                  //     context, MaterialPageRoute(builder: (_) => MainPage()));
                 },
                 child: Text(
                   'Login',

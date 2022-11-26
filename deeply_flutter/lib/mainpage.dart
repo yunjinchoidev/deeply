@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'mainpages/homescreen.dart';
 import 'mainpages/matchingsreen.dart';
+import 'mainpages/registerscreen.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -20,6 +21,7 @@ class _MainPageState extends State<MainPage> {
   int _seletedIndex = 0;
   List<BottomNavigationBarItem> bottomItem=[
     BottomNavigationBarItem(icon: Icon(Icons.login), label: '로그인'),
+    BottomNavigationBarItem(icon: Icon(Icons.app_registration), label: '회원가입'),
     BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
     BottomNavigationBarItem(icon: Icon(Icons.meeting_room), label: '매칭 서비스'),
     BottomNavigationBarItem(icon: Icon(Icons.shop), label: '상점'),
@@ -29,6 +31,10 @@ class _MainPageState extends State<MainPage> {
   List pages = [
     Container(
       child: LoginApp(),
+      // Center(child: Text('디플리 홈'),),
+    ),
+    Container(
+      child: RegisterApp(),
       // Center(child: Text('디플리 홈'),),
     ),
     Container(

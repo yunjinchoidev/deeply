@@ -22,13 +22,36 @@ class RegisterApp extends StatefulWidget {
 }
 
 class _RegisterAppState extends State<RegisterApp> {
+  void _showDialog(String text, String contents) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+          title: new Text(text),
+          content: SingleChildScrollView(child: new Text(contents)),
+          actions: <Widget>[
+            new TextButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _callAPI() async {
     var url = Uri.parse(
       'http://localhost:9000/auth/signup',
     );
 
     print(url);
-    var data = {"email": "local-user@mail.com", "password": "1111"};
+    var data = {"email": "local-user2@mail.com", "password": "1111"};
     var jsonbody = json.encode(data);
 
     var response = await http.post(url,
@@ -36,7 +59,7 @@ class _RegisterAppState extends State<RegisterApp> {
     print('${response}');
     print('${response.statusCode}');
     print('${response.body}');
-    
+
     // print('Response status: ${response.statusCode}');
     // print('Response body: ${response.body}');
   }
@@ -45,7 +68,7 @@ class _RegisterAppState extends State<RegisterApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login Page'),
+        title: Text('회원가입'),
       ),
       body: SingleChildScrollView(
         // height: 150.0,
@@ -56,6 +79,7 @@ class _RegisterAppState extends State<RegisterApp> {
         // ),
         child: Column(
           children: <Widget>[
+
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
               child: Center(
@@ -68,6 +92,8 @@ class _RegisterAppState extends State<RegisterApp> {
                     child: Image.asset('asset/image/deeply.png')),
               ),
             ),
+
+
             Padding(
               //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: EdgeInsets.symmetric(horizontal: 15),
@@ -78,6 +104,7 @@ class _RegisterAppState extends State<RegisterApp> {
                     hintText: 'Enter valid email id as abc@gmail.com'),
               ),
             ),
+
             Padding(
               padding: const EdgeInsets.only(
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
@@ -90,6 +117,7 @@ class _RegisterAppState extends State<RegisterApp> {
                     hintText: 'Enter secure password'),
               ),
             ),
+
             TextButton(
               onPressed: () {
                 //TODO FORGOT PASSWORD SCREEN GOES HERE
@@ -99,6 +127,7 @@ class _RegisterAppState extends State<RegisterApp> {
                 style: TextStyle(color: Colors.blue, fontSize: 15),
               ),
             ),
+
             Container(
               height: 50,
               width: 250,
@@ -106,15 +135,21 @@ class _RegisterAppState extends State<RegisterApp> {
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               child: TextButton(
                 onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => MainPage()));
+                  _showDialog("회원가입성공", "성공");
+                  // Navigator.push(
+                  //     context, MaterialPageRoute(builder: (_) => MainPage()));
                 },
                 child: Text(
-                  'Login',
+                  '회원가입',
                   style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
             ),
+
+            SizedBox(
+              height: 20,
+            ),
+
             Container(
                 height: 50,
                 width: 250,
@@ -124,9 +159,11 @@ class _RegisterAppState extends State<RegisterApp> {
                   onPressed: _callAPI,
                   child: const Text('Call API'),
                 )),
+
             SizedBox(
               height: 130,
             ),
+
             Text('New User? Create Account')
           ],
         ),
