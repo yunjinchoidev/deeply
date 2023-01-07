@@ -147,11 +147,13 @@ dependencies {
 //    implementation 'org.springframework.data:spring-data-elasticsearch'
 
     // oauth 2
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+//    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
     /* kafka */
-    implementation 'org.springframework.kafka:spring-kafka'
-    testImplementation 'org.springframework.kafka:spring-kafka-test'
+//    implementation 'org.springframework.kafka:spring-kafka'
+//    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    // https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients
+//    implementation 'org.apache.kafka:kafka-clients:3.1.0'
 
     // websocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
