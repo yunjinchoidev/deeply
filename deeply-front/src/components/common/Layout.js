@@ -4,7 +4,7 @@ import {Link, Outlet} from "react-router-dom";
 const Layout = () => {
     return (
         <div>
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{borderBottom:`3px solid grey`}}>
                 <a className="navbar-brand" href="#" style={{fontSize:`40px`, paddingLeft:`20px`, fontWeight:`bolder`}}>디플리</a>
                 <div className="collapse navbar-collapse" id="navbarNavDropdown" style={{fontSize:`20px`, fontWeight:`bolder`}}>
                     <ul className="navbar-nav">

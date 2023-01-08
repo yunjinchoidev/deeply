@@ -2,6 +2,7 @@ import axios from "axios";
 import data from "bootstrap/js/src/dom/data";
 import {LOGIN_USER, REGISTER_USER} from "./types";
 
+
 /**
  * 로그인
  */
@@ -9,7 +10,7 @@ export function loginUser(dataToSubmit){
 
     const request = axios({
             method: "post",
-            url: "http://localhost:9000/auth/signin",
+            url: "http://process.env.REACT_APP_DB_HOST/auth/signin",
             data: dataToSubmit,
         })
             .then((res) => {
@@ -40,7 +41,7 @@ export function registerUser(dataToSubmit){
 
     const request = axios({
             method: "post",
-            url: "http://localhost:9000/auth/signup",
+            url: "http://"+process.env.REACT_APP_DB_HOST+"/auth/signup",
             data: dataToSubmit,
         })
             .then((res) => {

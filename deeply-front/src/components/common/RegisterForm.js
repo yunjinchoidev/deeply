@@ -39,12 +39,17 @@ const RegisterForm = (props) => {
 
         const [userImage, setUserImage] = useState("");
         const [fileImage, setFileImage] = useState("");
+        const [show, setShow] = useState(false);
 
+        /**
+         * 파일 변경시 처리
+         */
         const handleChangeFile = (e) => {
             let reader = new FileReader();
             console.log(e)
             if (e.target.files[0]) {
                 reader.readAsDataURL(e.target.files[0]);
+                setShow(true);
             }
             reader.onloadend = () => {
                 const resultImage = reader.result;
@@ -58,19 +63,16 @@ const RegisterForm = (props) => {
         return (
             <Form>
                 <Form.Group className="mb-3" controlId="formBasicEmailRegister">
-                    <Form.Label>Email address</Form.Label>
+                    <h5 style={{textAlign: `left`}}> 이메일 </h5>
                     <Form.Control type="email"
-                                  placeholder="Enter email"
+                                  placeholder="이메일을 입력해주세요."
                                   value={email}
                                   onChange={(e) => setEmail(e.target.value)}
                     />
-                    <Form.Text className="text-muted">
-                        We'll never share your email with anyone else.
-                    </Form.Text>
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPasswordRegister">
-                    <Form.Label>비밀번호</Form.Label>
+                    <h5 style={{textAlign: `left`}}> 비밀번호 </h5>
                     <Form.Control type="password"
                                   placeholder="Password"
                                   value={password}
@@ -80,7 +82,7 @@ const RegisterForm = (props) => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPasswordConfirmRegister">
-                    <Form.Label>비밀번호 확인</Form.Label>
+                    <h5 style={{textAlign: `left`}}> 비밀번호 확인 </h5>
                     <Form.Control type="password"
                                   placeholder="passwordConfirm"
                                   value={passwordConfirm}
@@ -90,7 +92,7 @@ const RegisterForm = (props) => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicUsernameRegister">
-                    <Form.Label>이름</Form.Label>
+                    <h5 style={{textAlign: `left`}}> 이름 </h5>
                     <Form.Control type="text"
                                   placeholder="이름"
                                   value={username}
@@ -101,23 +103,30 @@ const RegisterForm = (props) => {
 
 
                 <Form.Group className="mb-3" controlId="formBasicFileRegister">
-                    <Form.Label>파일</Form.Label>
+                    <h5 style={{textAlign: `left`}}> 프로필 </h5>
                     <Form.Control type="file"
                                   placeholder="file"
                                   onChange={handleChangeFile}
                     />
                 </Form.Group>
 
-                <img
-                    alt="sample"
-                    src={fileImage}
-                    style={{margin: "auto"}}
-                />
+                {/**
+                 * 이미지가 등록되었을 때만 화면에 보여주기 : show: Booelan 변수
+                 */}
+                {
+                    show &&
+                    <img
+                        alt="sample"
+                        src={fileImage}
+                        style={{width: `100px`, height: `100px`, border: `2px solid black`, marginBottom: `10px`}}
+                    />
+                }
+                <br/>
 
-                <Button variant="primary" type="submit">작성 완료</Button>{' '}
-                <Button variant="dark" type="reset">초기화</Button>{' '}
+                {/*<Button variant="primary" type="submit">작성 완료</Button>{' '}*/}
                 <Button variant="info" type="button"
-                        onClick={registerDB(email, password, passwordConfirm, username)}>회원가입</Button>
+                        onClick={registerDB(email, password, passwordConfirm, username)}>회원가입</Button>{' '}
+                <Button variant="dark" type="reset">초기화</Button>{' '}
             </Form>
         );
     }
