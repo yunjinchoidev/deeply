@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.util.HashMap;
 
@@ -30,19 +31,20 @@ public class BoardController {
 
     /**
      * 게시판 저장
+     *
      * @param files
      * @param boardRequestDto
      * @return
      */
     @PostMapping("/board")
     public ResponseEntity write(@RequestParam("file") MultipartFile files,
-                                 BoardRequestDto boardRequestDto) {
+                                BoardRequestDto boardRequestDto) {
         HashMap<String, Long> result = new HashMap<>();
         try {
             String origFilename = files.getOriginalFilename();
             String filename = new MD5Generator(origFilename).toString();
             /* 실행되는 위치의 'files' 폴더에 파일이 저장됩니다. */
-            String savePath = System.getProperty("user.dir") + File.separator+"files";
+            String savePath = System.getProperty("user.dir") + File.separator + "files";
             /* 파일이 저장되는 폴더가 없으면 폴더를 생성합니다. */
             if (!new File(savePath).exists()) {
                 try {
@@ -76,7 +78,7 @@ public class BoardController {
     }
 
 
-      /**
+    /**
      * 게시판 정보 리스트 조회
      */
     @PostMapping("/board/list")
@@ -88,7 +90,7 @@ public class BoardController {
                 .body(result);
     }
 
-   /**
+    /**
      * 게시판 단일 조회
      */
     @GetMapping("/board/{id}")
@@ -106,7 +108,6 @@ public class BoardController {
     }
 
 
-
     /**
      * 게시판 정보 수정
      */
@@ -114,14 +115,12 @@ public class BoardController {
     public ResponseEntity updateboard(@RequestBody BoardRequestDto param) {
         log.info("boardService->saveboard");
         Long boardId = boardService.saveBoard(param);
-        HashMap<String,Long> result = new HashMap<>();
+        HashMap<String, Long> result = new HashMap<>();
         result.put("boardId", boardId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(result);
     }
-
-
 
 
 }
