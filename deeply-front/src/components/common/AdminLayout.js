@@ -5,7 +5,7 @@ const Layout = () => {
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <a className="navbar-brand" href="#">디플리</a>
+                <h2 className="navbar-brand" href="#" style={{fontSize:`30px`}}>디플리</h2>
                 <div className="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul className="navbar-nav">
                         <li className="nav-item active"><a className="nav-link" href="/">홈</a></li>

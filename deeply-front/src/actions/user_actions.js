@@ -2,6 +2,9 @@ import axios from "axios";
 import data from "bootstrap/js/src/dom/data";
 import {LOGIN_USER, REGISTER_USER} from "./types";
 
+/**
+ * 로그인
+ */
 export function loginUser(dataToSubmit){
 
     const request = axios({
@@ -24,14 +27,15 @@ export function loginUser(dataToSubmit){
                 console.log(error);
                 alert("회원 정보가 정확하지 않습니다.")
             });
-    // const request = axios.post("http://localhost:9000/auth/signin", dataToSubmit)
-    //     .then(response => response.data)
     return {
         type: LOGIN_USER,
         payload: request
     }
 }
 
+/**
+ *  회원가입
+ */
 export function registerUser(dataToSubmit){
 
     const request = axios({
@@ -44,15 +48,11 @@ export function registerUser(dataToSubmit){
                 const id = res.data.id;
                 console.log("id:"+id)
                 console.log("회원가입에 성공했습니다.. \n 디플리에 오신 걸 환영합니다.")
-
-                // document.location.href = "/";
             })
             .catch((error) => {
                 console.log(error);
             });
 
-    // const request = axios.post("http://localhost:9000/auth/signin", dataToSubmit)
-    //     .then(response => response.data)
     return {
         type: REGISTER_USER,
         payload: request

@@ -27,45 +27,45 @@ import ChatPage from "./pages/ChatPage";
 
 
 function App() {
-  return (
-      <>
-          <Routes>
-              <Route element={<Layout/>}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/sociallogin" element={<SocialLoginPage />} />
-                  <Route path="/logout" element={<LogoutPage />} />
-                  <Route path="/register" element={<RegisterPage />} />
-                  <Route path="/mypage" element={<MyPage />} />
-                  <Route path="/myfeed" element={<MyFeedPage />} />
-                  <Route path="/customercenter" element={<CustomerCenterPage />} />
-                  <Route path="/write" element={<WritePage />} />
-                  <Route path="/boardList" element={<BoardListPage/>} />
-                  <Route path="/notice" element={<NoticePage/>} />
-                  <Route path="/basket" element={<BasketPage/>} />
-                  <Route path="/order" element={<OrderPage/>} />
-                  <Route path="/matchList" element={<MatchListPage/>}/>
-                  <Route path="/profile" element={<ProfilePage/>}/>
-                  <Route path="/policy" element={<PolicyPage/>}/>
-                  <Route path="/mapservice" element={<MapServicePage/>}/>
-                  <Route path="/chat" element={<ChatPage/>}/>
+    return (
+        <>
+            <Routes>
+                <Route element={<Layout/>}>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="/login" element={<LoginPage/>}/>
+                    <Route path="/sociallogin" element={<SocialLoginPage/>}/>
+                    <Route path="/logout" element={<LogoutPage/>}/>
+                    <Route path="/register" element={<RegisterPage/>}/>
+                    <Route path="/mypage" element={<MyPage/>}/>
+                    <Route path="/myfeed" element={<MyFeedPage/>}/>
+                    <Route path="/customercenter" element={<CustomerCenterPage/>}/>
+                    <Route path="/write" element={<WritePage/>}/>
+                    <Route path="/boardList" element={<BoardListPage/>}/>
+                    <Route path="/notice" element={<NoticePage/>}/>
+                    <Route path="/basket" element={<BasketPage/>}/>
+                    <Route path="/order" element={<OrderPage/>}/>
+                    <Route path="/matchList" element={<MatchListPage/>}/>
+                    <Route path="/profile" element={<ProfilePage/>}/>
+                    <Route path="/policy" element={<PolicyPage/>}/>
+                    <Route path="/mapservice" element={<MapServicePage/>}/>
+                    <Route path="/chat" element={<ChatPage/>}/>
 
-                  <Route element={<AdminLayout/>}>
-                      <Route path="/admin" element={<AdminPage/>}/>
-                  </Route>
-                  <Route path="/board">
-                      <Route index element={<BoardListPage />} />
-                      <Route path=":write" element={<BoardPage />} />
-                  </Route>
-              </Route>
+                    <Route element={<AdminLayout/>}>
+                        <Route path="/admin" element={<AdminPage/>}/>
+                    </Route>
+                    <Route path="/board">
+                        <Route index element={<BoardListPage/>}/>
+                        <Route path=":write" element={<BoardPage/>}/>
+                    </Route>
+                </Route>
 
-                  <Route path="/@:username">
-                      <Route index element={<PostListPage />} />
-                      <Route path=":postId" element={<PostPage />} />
-                  </Route>
-          </Routes>
-      </>
-  );
+                <Route path="/@:username">
+                    <Route index element={<PostListPage/>}/>
+                    <Route path=":postId" element={<PostPage/>}/>
+                </Route>
+            </Routes>
+        </>
+    );
 }
 
 export default App;

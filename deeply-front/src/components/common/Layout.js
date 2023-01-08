@@ -10,7 +10,7 @@ const Layout = () => {
                     <ul className="navbar-nav">
                         <li className="nav-item active"><a className="nav-link" href="/">홈</a></li>
                         <li className="nav-item"><a className="nav-link" href="/login">로그인</a></li>
-                        <li className="nav-item"><a className="nav-link" href="/sociallogin">소셜로그인</a></li>
+                        {/*<li className="nav-item"><a className="nav-link" href="/sociallogin">소셜로그인</a></li>*/}
                         <li className="nav-item"><a className="nav-link" href="/logout">로그아웃</a></li>
                         <li className="nav-item"><a className="nav-link" href="/register">회원가입</a></li>
                         <li className="nav-item"><a className="nav-link" href="/mypage">마이페이지</a></li>
@@ -29,7 +29,9 @@ const Layout = () => {
                 </div>
             </nav>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <a className="navbar-brand" href="#">사랑은 현실이 됩니다. 아름다운 황혼은 당신 것입니다.</a>
+                <a className="navbar-brand" href="#"
+                    style={{fontSize:`30px`, textAlign:`center`, color:`red`}}
+                    >사랑은 현실이 됩니다. 아름다운 황혼은 당신 것입니다.</a>
             </nav>
             <hr/>
             <main>
