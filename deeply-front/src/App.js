@@ -28,7 +28,7 @@ import ChatPage from "./pages/ChatPage";
 
 function App() {
     return (
-        <>
+        <div className="App">
             <Routes>
                 <Route element={<Layout/>}>
                     <Route path="/" element={<Home/>}/>
@@ -64,7 +64,7 @@ function App() {
                     <Route path=":postId" element={<PostPage/>}/>
                 </Route>
             </Routes>
-        </>
+        </div>
     );
 }
 
