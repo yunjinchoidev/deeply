@@ -28,7 +28,8 @@ const LoginForm = (props) => {
         return (
             <Form onSubmit={onSubmitHandler}>
                 <Form.Group className="mb-3" controlId="formBasicEmailLogin">
-                    <Form.Label>이메일</Form.Label>
+                    <br/>
+                    <h4 style={{textAlign:`left`}}>이메일</h4>
                     <Form.Control type="email"
                                   placeholder="Enter email"
                                   value={email}
@@ -37,7 +38,8 @@ const LoginForm = (props) => {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPasswordLogin">
-                    <Form.Label>비밀번호</Form.Label>
+                    <br/>
+                    <h4 style={{textAlign:`left`}}>비밀번호</h4>
                     <Form.Control type="password"
                                   placeholder="Password"
                                   value={password}
@@ -46,15 +48,15 @@ const LoginForm = (props) => {
                     />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicCheckboxLogin">
-                    <Form.Check type="checkbox" label="자동 로그인"/>
-                </Form.Group>
-
+                {/*<Form.Group className="mb-3" controlId="formBasicCheckboxLogin">*/}
+                {/*    <Form.Check type="checkbox" label="자동 로그인"/>*/}
+                {/*</Form.Group>*/}
+                <br/>
                 {/**버튼*/}
                 <Button variant="dark" type="submit">{' '}로그인</Button>{' '}
-                <Button variant="dark" type="reset">초기화</Button>{' '}
-                <Button variant="dark" type="reset">이메일찾기</Button>{' '}
-                <Button variant="dark" type="reset">비밀번호 찾기</Button>{' '}
+                <Button variant="secondary" type="reset">초기화</Button>{' '}
+                <Button variant="success" type="reset">이메일찾기</Button>{' '}
+                <Button variant="info" type="reset">비밀번호 찾기</Button>{' '}
             </Form>
         );
     }

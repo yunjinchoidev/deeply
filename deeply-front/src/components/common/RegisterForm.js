@@ -21,13 +21,14 @@ const RegisterForm = (props) => {
          * 등록
          */
         const registerDB = (email, password, passwordConfirm) => {
-
+            console.log("회원가입 시도")
             let body = {
                 email: email,
                 password: password
             }
 
             return function () {
+                console.log("?")
                 dispatch(registerUser(body))
             }
         }
