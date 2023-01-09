@@ -169,6 +169,7 @@ public class UserServiceImpl implements UserDetailsService {
         redisTemplate.opsForValue()
                 .set("RT:" + authentication.getName(), refreshToken, 604800, TimeUnit.MILLISECONDS);
 
+        Boolean isAdmin = "ROLE_ADMIN".equals(originalUser.getRole()) ? true : false;
 
         // accessToken과 refreshToken 리턴
         final UserResponseDto responseUserDTO = UserResponseDto.builder()
@@ -177,6 +178,8 @@ public class UserServiceImpl implements UserDetailsService {
                 .password(password)
                 .username(originalUser.getUsername())
                 .role(originalUser.getRole())
+                .isAuth(true)
+                .isAdmin(isAdmin)
                 .accessToken(tokenProvider.createAccessToken(authentication))
 //                .refreshToken(refreshToken)
                 .build();

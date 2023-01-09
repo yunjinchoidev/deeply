@@ -24,7 +24,7 @@ public class UserResponseDto {
 
     private Boolean isAdmin;
     private Boolean isAuth;
-  private String provider;
+    private String provider;
     private String providerId;
 
     @Builder.Default
@@ -36,7 +36,7 @@ public class UserResponseDto {
     @Builder.Default
     private LocalDateTime updateDt = null; // 수정일시
 
-    public void from(){
+    public void from() {
 
     }
 }

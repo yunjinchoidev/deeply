@@ -53,6 +53,7 @@ public class SignController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticate(@RequestBody UserRequestDto userDTO) {
 
+        log.info("userService.getByCredentials");
         UserResponseDto userResponseDto = userService.getByCredentials(userDTO.getEmail(),
                 userDTO.getPassword(),
                 passwordEncoder);
@@ -74,6 +75,9 @@ public class SignController {
     }
 
 
+    /**
+     * 로그아웃
+     */
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@Validated UserRequestDto logout, Errors errors) {
         // validation check
@@ -82,26 +86,36 @@ public class SignController {
         }
         ResponseEntity<?> result = userService.logout(logout);
 
-
         return result;
     }
 
 
+    /**
+     * 권한 체크
+     * @param request
+     * @return
+     */
     @GetMapping("/check")
     public ResponseEntity<?> check(HttpServletRequest request) {
+
         // validation check
         String token = jwtTokenUtil.parseBearerToken(request);
         String email = jwtTokenUtil.getEmailFormToken(token);
         String role = jwtTokenUtil.getRoleFromToken(token);
         UserRequestDto userRequestDto = UserRequestDto.builder().email(email).build();
+        log.info("userService.findUserByEmail(userRequestDto)");
         UserResponseDto result = userService.findUserByEmail(userRequestDto);
         result.setIsAuth(true);
 
+        /**
+         * 권한 체크
+         */
         if ("ROLE_ADMIN".equals(role)) {
             result.setIsAdmin(true);
         } else {
             result.setIsAdmin(false);
         }
+
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
