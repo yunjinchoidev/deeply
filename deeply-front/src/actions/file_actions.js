@@ -9,7 +9,7 @@ export function displayFile(dataToSubmit) {
 
     const request = axios({
         method: "get",
-        url: "http://localhost:9000/display/" + dataToSubmit,
+        url: "http://"+process.env.REACT_APP_DB_HOST+"/display/" + dataToSubmit,
     })
         .then((res) => {
             console.log("파일 정보")

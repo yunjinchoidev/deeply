@@ -22,7 +22,7 @@ export function boardListAction(dataToSubmit) {
     axios.defaults.headers.common['Authorization'] = accessToken
     const request = axios({
         method: "post",
-        url: "http://localhost:9000/api/board/list",
+        url: "http://"+process.env.REACT_APP_DB_HOST+"/api/board/list",
         data: dataToSubmit,
     })
         .then((res) => {

@@ -23,7 +23,7 @@ export function findProfile(dataToSubmit) {
 
     const request = axios({
         method: "get",
-        url: "http://localhost:9000/api/profile/" + dataToSubmit,
+        url: "http://"+process.env.REACT_APP_DB_HOST+"/api/profile/" + dataToSubmit,
     })
         .then((res) => {
             console.log(res)
@@ -64,7 +64,7 @@ export function myProfile() {
 
     const request = axios({
         method: "get",
-        url: "http://localhost:9000/api/profile/mine",
+        url: "http://"+process.env.REACT_APP_DB_HOST+"/api/profile/mine",
     })
         .then((res) => {
             console.log(res)

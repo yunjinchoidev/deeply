@@ -27,8 +27,6 @@ const LoginForm = (props) => {
 
         return (
             <Form onSubmit={onSubmitHandler}>
-                <h2>gg</h2>
-                <h2>{process.env.REACT_APP_DB_HOST}d</h2>
                 <Form.Group className="mb-3" controlId="formBasicEmailLogin">
                     <Form.Label>이메일</Form.Label>
                     <Form.Control type="email"
