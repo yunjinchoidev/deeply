@@ -23,11 +23,40 @@ import java.util.HashMap;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api")
 public class BoardController {
 
     private final FileService fileService;
     private final BoardService boardService;
+
+    /**
+     * 게시판 정보 리스트 조회
+     */
+    @PostMapping("/api/board/list")
+    public ResponseEntity getboardList(@RequestBody BoardRequestDto param) {
+        log.info("boardService->findAll");
+        Page<BoardResponseDto> result = boardService.searchAll(param);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(result);
+    }
+
+    /**
+     * 게시판 단일 조회
+     */
+    @GetMapping("/api/board/{id}")
+    public ResponseEntity getBoard(@PathVariable Long id) {
+        log.info("boardService -> findboard");
+        BoardRequestDto boardRequestDto = BoardRequestDto.builder()
+                .id(id)
+                .build();
+        log.info("boardService->findboardById");
+        BoardResponseDto result = boardService.getPost(boardRequestDto);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(result);
+    }
+
 
     /**
      * 게시판 저장
@@ -36,8 +65,8 @@ public class BoardController {
      * @param boardRequestDto
      * @return
      */
-    @PostMapping("/board")
-    public ResponseEntity write(@RequestParam("file") MultipartFile files,
+    @PostMapping("/api/board")
+    public ResponseEntity saveBoard(@RequestParam("file") MultipartFile files,
                                 BoardRequestDto boardRequestDto) {
         HashMap<String, Long> result = new HashMap<>();
         try {
@@ -77,46 +106,29 @@ public class BoardController {
                 .body(result);
     }
 
-
-    /**
-     * 게시판 정보 리스트 조회
-     */
-    @PostMapping("/board/list")
-    public ResponseEntity getboardList(@RequestBody BoardRequestDto param) {
-        log.info("boardService->findAll");
-        Page<BoardResponseDto> result = boardService.searchAll(param);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(result);
-    }
-
-    /**
-     * 게시판 단일 조회
-     */
-    @GetMapping("/board/{id}")
-    public ResponseEntity getBoard(@PathVariable Long id) {
-        log.info("boardService -> findboard");
-        BoardRequestDto boardRequestDto = BoardRequestDto.builder()
-                .id(id)
-                .build();
-        log.info("boardService->findboardById");
-        BoardResponseDto result = boardService.getPost(boardRequestDto);
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(result);
-    }
-
-
     /**
      * 게시판 정보 수정
      */
-    @PutMapping("/board")
+    @PutMapping("/api/board")
     public ResponseEntity updateboard(@RequestBody BoardRequestDto param) {
         log.info("boardService->saveboard");
         Long boardId = boardService.saveBoard(param);
         HashMap<String, Long> result = new HashMap<>();
         result.put("boardId", boardId);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(result);
+    }
+
+
+    @DeleteMapping("/api/board/id/{id}")
+    public ResponseEntity deleteBoard(
+            @PathVariable Long id){
+        log.info("게시물 삭제");
+        BoardRequestDto boardRequestDto = new BoardRequestDto();
+        boardRequestDto.setId(id);
+        log.info("boardService -> removeBoard");
+        BoardResponseDto result = boardService.removeBoard(boardRequestDto);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(result);

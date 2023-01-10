@@ -63,7 +63,7 @@ public class UserController {
     /**
      * 회원 정보 리스트 조회
      */
-    @PostMapping("/user/list")
+    @PostMapping("/api/user/list")
     public ResponseEntity getUserList(@RequestBody UserRequestDto param) {
         log.info("userService->findAll");
         Page<UserResponseDto> result = this.userService.findAll(param);
@@ -75,7 +75,7 @@ public class UserController {
     /**
      * 회원 정보 수정
      */
-    @PutMapping("/user")
+    @PutMapping("/api/user")
     public ResponseEntity updateUser(@RequestBody UserRequestDto param) {
         log.info("userService->updateUser");
         UserResponseDto result = this.userService.updateUser(param);

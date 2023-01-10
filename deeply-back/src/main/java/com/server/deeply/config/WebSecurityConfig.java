@@ -36,13 +36,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()  // session 기반이 아님을 선언
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests() // /와 /auth/** 경로는 인증 안해도 됨.
+                .authorizeRequests() // /와 /auth/** /sample/**  경로는 인증 안해도 됨.
                 .antMatchers("/",
                         "/auth/**",
-                        "/push/**",
-                        "/sample/**",
-                        "/open/**",
-                        "/notify/**"
+                        "/sample/**"
                 ).permitAll()
                 .anyRequest() // /와 /auth/**이외의 모든 경로는 인증 해야됨.
                 .authenticated();
