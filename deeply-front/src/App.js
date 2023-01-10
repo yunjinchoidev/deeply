@@ -24,6 +24,8 @@ import BasketPage from "./pages/BasketPage";
 import OrderPage from "./pages/OrderPage";
 import MapServicePage from "./pages/MapServicePage";
 import ChatPage from "./pages/ChatPage";
+import BoardGet from "./components/common/BoardGet";
+import BoardGetPage from "./pages/BoardGetPage";
 
 
 function App() {
@@ -55,7 +57,8 @@ function App() {
                     </Route>
                     <Route path="/board">
                         <Route index element={<BoardListPage/>}/>
-                        <Route path=":write" element={<BoardPage/>}/>
+                        <Route path="write" element={<BoardPage/>}/>
+                        <Route path="id/:id" element={<BoardGetPage/>}/>
                     </Route>
                 </Route>
 

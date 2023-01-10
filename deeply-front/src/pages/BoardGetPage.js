@@ -4,14 +4,15 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import BoardWriteForm from "../components/common/BoardWriteForm";
+import BoardGet from "../components/common/BoardGet";
 
-const BoardPage = () => {
+const BoardGetPage = () => {
     return (
         <div style={{width:`800px`, height:`1000px`, margin:`auto`, border:`4px solid pink`, padding:`30px` }}>
-            <h1>자유게시판</h1>
-            <BoardWriteForm></BoardWriteForm>
+            <h1>글 조회</h1>
+            <BoardGet></BoardGet>
         </div>
     );
 };
 
-export default BoardPage;
+export default BoardGetPage;
