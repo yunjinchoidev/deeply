@@ -49,3 +49,5 @@ Dockerfile-prod
 
 src/main/resources/firebase/deeply-firebase.json
 src/main/resources/oauth/google/client_secret_801697074418-rk1q2db02j7c13q9gefgfmmi4rngfstb.apps.googleusercontent.com.json
+
+files/**
